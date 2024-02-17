@@ -102,7 +102,7 @@ nav a{
 }
 
 nav a:hover {
-	color: #B1663C;
+	font-weight: bold;
 }
 
 
@@ -132,6 +132,30 @@ nav a:hover {
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
+}
+
+.btn-filtres{
+	display: flex;
+	justify-content: center;
+	gap: 0.62rem;
+	padding-bottom: 30px;
+}
+
+.btn-filtres button{
+	all: unset;
+	border: 1px solid #1D6154;
+	border-radius: 3.75rem;	
+	width: 12.375rem;
+	height: 2.3125rem;
+	color: #1D6154;
+	text-align: center;
+	font-family: Syne;
+	font-size: 1rem;
+}
+
+.btn-filtres button:hover{
+	color: white;
+	background-color: #1D6154;
 }
 .gallery {
 	width: 100%;
@@ -194,6 +218,7 @@ input[type="submit"]{
 
 #login a{
 	text-align: center;
+	color: black;
 }
 
 footer nav ul {
