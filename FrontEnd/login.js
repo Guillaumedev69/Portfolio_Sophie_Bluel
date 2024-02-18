@@ -89,38 +89,32 @@ formLogIn.addEventListener("submit", async function (SubmitEvent) {
         inputMdp.value = "";
         alert("Champs vide !");
         console.log("champs vide");
-    } else {
-        try { // Envoyer de la demande de connexion
-            const swaggerLogin = await fetch("http://localhost:5678/api/users/login", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email,password}),
-            });
-        
-            if (swaggerLogin.ok) {
-        
-            const swaggerToken = await swaggerLogin.json(); // Recuperation du token en JSON
-            localStorage.setItem("token", swaggerToken.token); // Mise en mémoire du token
-            inputEmail.value = "";
-            inputMdp.value = "";
-            alert("Connexion réussie !");
-            console.log("Connexion réussie !");
-            setTimeout(() => {
-                window.location.href="index.html"; // Redirection vers la page en 3s
-            }, 3000);
-            console.log(swaggerToken);
-        
-            } else {
-            inputEmail.value = "";
-            inputMdp.value = "";
-            alert("Erreur lors de la connexion :", swaggerLogin.status);
-            console.log("Erreur lors de la connexion :", swaggerLogin.status);
-            }
-
-        } catch (error){
-            alert("Error");
-        }
     }
+    try { // Envoyer de la demande de connexion
+        const swaggerLogin = await fetch("http://localhost:5678/api/users/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email,password}),
+        });
+        if (swaggerLogin.ok) { 
+        const swaggerToken = await swaggerLogin.json(); // Recuperation du token en JSON
+        localStorage.setItem("token", swaggerToken.token); // Mise en mémoire du token
+        inputEmail.value = "";
+        inputMdp.value = "";
+        alert("Connexion réussie !");
+        console.log("Connexion réussie !");
+        setTimeout(() => {
+            window.location.href="index.html"; // Redirection vers la page en 3s
+        }, 3000);
+        } else {
+        inputEmail.value = "";
+        inputMdp.value = "";
+        alert("E-mail et/ou Mot de passe incorrect error: " + swaggerLogin.status);
+        console.log("E-mail et/ou Mot de passe incorrect");
+        }
+    } catch (error){
+        alert("Erreur lors de la connexion: "+ swaggerLogin.status);
+    }  
 });
 
 // Gestion du Footer
