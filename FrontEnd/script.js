@@ -39,7 +39,7 @@ function genererButton(categories) {
     divFiltres.className = "btn-filtres";
 
     const boutonTous = document.createElement("button");
-    boutonTous.className = "filtres-tous";
+    boutonTous.id = "filtres-tous";
     const nomBoutonTous = document.createElement("h3");
     nomBoutonTous.innerText = "Tous";
     
