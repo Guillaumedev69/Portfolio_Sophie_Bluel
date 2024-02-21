@@ -29,6 +29,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
+	background: #FFFEF8;
 	line-height: 1;
 }
 ol, ul {
@@ -59,6 +60,27 @@ header {
 	margin: 50px 0
 }
 
+.editHeader{
+	display: flex;
+	flex-direction: column;
+}
+
+.elementNewHeader{
+	display: flex;
+	justify-content: space-between;
+	margin: 50px 0
+}
+
+.editModeHeader{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #000;
+	color: white;
+	flex-shrink: 0;
+	height: 3.6875rem;
+}
+
 section {
 	margin: 50px 0
 }
@@ -85,6 +107,7 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -142,8 +165,28 @@ nav a:hover {
 	margin-bottom: 0.5em;
 }
 #portfolio h2 {
-	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
 	margin-bottom: 1em;
+}
+#portfolio h2 span a{
+	display: flex;
+	align-items: center;
+	color: #000;
+	font-family: "Work Sans";
+	font-size: 0.875rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-decoration: none;
+	text-align: center;
+	padding-left: 1.94rem;
+}
+#portfolio h2 img{
+	height: 0.97375rem;
+	padding-right: 0.65rem;
 }
 
 .btn-filtres{
@@ -181,6 +224,8 @@ button.filtres-id[data-category-id='3'] {
 	color: white;
 	background-color: #1D6154;
 }
+
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -245,9 +290,12 @@ input[type="submit"]{
 	color: black;
 }
 
-footer nav ul {
-	display: flex;
+footer{
+	background-color: white;
+}
+footer nav ul li{
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
+	width: 100%;
 }
 
