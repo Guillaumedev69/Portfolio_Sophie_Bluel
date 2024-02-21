@@ -80,7 +80,7 @@ genererWorks(works);
 const token = localStorage.getItem("token");
 console.log(token)
 
-if (token) {
+function editModeHEader() {
     // editMode Header
         const editNewHeader = document.querySelector("header");
         editNewHeader.className = "editHeader"; // class pour le nouveau Header
@@ -101,14 +101,16 @@ if (token) {
         divEditHeader.appendChild(pEditHeader);
         editNewHeader.insertBefore(divEditHeader, editNewHeader.firstChild); // div mode éditon placée au début du header
 
-   const loginNavEdit = document.querySelector("nav li:nth-child(3) a");
-   loginNavEdit.textContent = "logout";  // remplacement de login par logout
+        const loginNavEdit = document.querySelector("nav li:nth-child(3) a");
+        loginNavEdit.textContent = "logout";  // remplacement de login par logout
 
     // suppression du token à la déconnexion
         loginNavEdit.addEventListener("click", function () { 
             localStorage.removeItem("token");
         })
+}
 
+function editModePorfolio() {
     // editMode Porfolio
         const editPorfolio = document.querySelector("#portfolio h2"); // Récuperation du place dans le h2
         const iconEditPortfolio = document.createElement("img"); // intégration de l'icon
@@ -122,10 +124,15 @@ if (token) {
         spanEditPorfolio.appendChild(aSpanTexte); // Appel du href dans le Span
         editPorfolio.appendChild(spanEditPorfolio); // mise a la suite du H2 le Span
 
-    // Suppressiond des filtres
+// Suppressiond des filtres
         const suppFiltres = document.querySelector(".btn-filtres")
         suppFiltres.style.display = "none";
-   
+}
+
+// Gestion du mode editon apres connexion
+if (token) {
+    editModeHEader()
+    editModePorfolio()
 }else{
     // Pas de mode edition si token pas présent
         genererButton(categories); 
