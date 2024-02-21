@@ -79,6 +79,7 @@ header {
 	color: white;
 	flex-shrink: 0;
 	height: 3.6875rem;
+	gap: 0.76rem;
 }
 
 section {
