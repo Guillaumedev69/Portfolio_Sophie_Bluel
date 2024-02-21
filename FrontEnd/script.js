@@ -74,6 +74,61 @@ function genererButton(categories) {
     }
 }
 
-genererButton(categories); 
 // fonction appelée apres categories pour avoir les filtres au-dessus
 genererWorks(works);
+
+const token = localStorage.getItem("token");
+console.log(token)
+
+if (token) {
+    // editMode Header
+        const editNewHeader = document.querySelector("header");
+        editNewHeader.className = "editHeader"; // class pour le nouveau Header
+        const h1Header = document.querySelector("header h1"); // Recupération  du H1
+        const navHeader = document.querySelector("header nav"); // Recupération  du Nav
+        const divElemNewHeader = document.createElement("div"); // Div pour englober H1 + Nav
+        divElemNewHeader.className = "elementNewHeader";
+        divElemNewHeader.appendChild(h1Header);
+        divElemNewHeader.appendChild(navHeader);
+        editNewHeader.appendChild(divElemNewHeader); // Appel du nouvel Header
+        const divEditHeader = document.createElement("div"); // Création de la div du mode édition
+        divEditHeader.className = "editModeHeader";
+        const iconEditHeader = document.createElement("img"); // intégration de l'icon
+        iconEditHeader.src = "assets/icons/iconEditWhite.png";
+        const pEditHeader = document.createElement("p"); // création du p "Mode édition"
+        pEditHeader.innerText = "Mode édition";
+        divEditHeader.appendChild(iconEditHeader);
+        divEditHeader.appendChild(pEditHeader);
+        editNewHeader.insertBefore(divEditHeader, editNewHeader.firstChild); // div mode éditon placée au début du header
+
+   const loginNavEdit = document.querySelector("nav li:nth-child(3) a");
+   loginNavEdit.textContent = "logout";  // remplacement de login par logout
+
+    // suppression du token à la déconnexion
+        loginNavEdit.addEventListener("click", function () { 
+            localStorage.removeItem("token");
+        })
+
+    // editMode Porfolio
+        const editPorfolio = document.querySelector("#portfolio h2"); // Récuperation du place dans le h2
+        const iconEditPortfolio = document.createElement("img"); // intégration de l'icon
+        iconEditPortfolio.src = "assets/icons/iconEditBlack.png";
+        const spanEditPorfolio = document.createElement("span"); // Création du span
+        const spanTexte = document.createTextNode("modifier");
+        const aSpanTexte = document.createElement("a"); // Création d'un lien vers la modal
+        aSpanTexte.href ="#";
+        aSpanTexte.appendChild(iconEditPortfolio);
+        aSpanTexte.appendChild(spanTexte); // Mise en href du texte et de l'icon
+        spanEditPorfolio.appendChild(aSpanTexte); // Appel du href dans le Span
+        editPorfolio.appendChild(spanEditPorfolio); // mise a la suite du H2 le Span
+
+    // Suppressiond des filtres
+        const suppFiltres = document.querySelector(".btn-filtres")
+        suppFiltres.style.display = "none";
+   
+}else{
+    // Pas de mode edition si token pas présent
+        genererButton(categories); 
+        genererWorks(works);
+}
+
