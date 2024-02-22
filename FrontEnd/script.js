@@ -129,19 +129,23 @@ function editModePorfolio() {
         suppFiltres.className = "suppFiltres";
 };
 
-function modale1() {
-    const bodyModale1 = document.querySelector("body");
+
+
+function modale() {
+    const bodyModale = document.querySelector("body");
 
     const overlay = document.createElement("div");
     overlay.className ="overlay";
 
-    const modale1container = document.createElement("div");
-    modale1container.className = "modale1Contain";
+    const modalecontainer = document.createElement("div");
+    modalecontainer.className = "modale1Contain";
 
-    const btnCloseModale1 = document.createElement("button");
-    btnCloseModale1.className = "modaleClose";
-    const iconCloseModale1 = document.createElement("img");
-    iconCloseModale1.src = "assets/icons/iconCLoseBlack.png";
+    const modaleHeader = document.createElement("div");
+    modaleHeader.className = "modaleHeader";
+    const btnCloseModale = document.createElement("button");
+    btnCloseModale.className = "modaleClose";
+    const iconCloseModale = document.createElement("img");
+    iconCloseModale.src = "assets/icons/iconCLoseBlack.png";
 
     const h3Modale = document.createElement("h3");
     h3Modale.innerHTML = "Galerie photo";
@@ -149,19 +153,56 @@ function modale1() {
     const modaleGalerie = document.createElement("div");
     modaleGalerie.className = "modaleGalerie";
 
-    const btnAjoutModale1 = document.createElement("button");
-    btnAjoutModale1.className = "modaleBtnAjout";
-    btnAjoutModale1.textContent = "Ajouter une photo";
+    const btnAjoutModale = document.createElement("button");
+    btnAjoutModale.className = "modaleBtnAjout";
+    btnAjoutModale.textContent = "Ajouter une photo";
 
-    btnCloseModale1.appendChild(iconCloseModale1);
-    modale1container.appendChild(btnCloseModale1);
-    modale1container.appendChild(h3Modale);
-    modale1container.appendChild(modaleGalerie);
-    modale1container.appendChild(btnAjoutModale1);
-    overlay.appendChild(modale1container);
-    bodyModale1.appendChild(overlay);
-    
+    btnCloseModale.appendChild(iconCloseModale);
+    modaleHeader.appendChild(btnCloseModale);
+    modalecontainer.appendChild(modaleHeader)
+    modalecontainer.appendChild(h3Modale);
+    modalecontainer.appendChild(modaleGalerie);
+    modalecontainer.appendChild(btnAjoutModale);
+    overlay.appendChild(modalecontainer);
+    bodyModale.appendChild(overlay);
+    // Fermer la Modale
+    btnCloseModale.addEventListener("click",function () {
+        modalecontainer.remove()
+        overlay.remove()
+    })
+    // affichage de la galerie de la modale
+    function genererWorksModale(works) {
+        const sectionGalerieModale = document.querySelector(".modaleGalerie");
+
+        for (let i = 0; i < works.length; i++) {
+            const figureGalerie = works[i];
+            const worksElement = document.createElement("figure");
+            const imageElement = document.createElement("img");
+                imageElement.src = figureGalerie.imageUrl;
+                imageElement.className = "imgGalerie"
+            const iconSupp = document.createElement("img")
+            iconSupp.src = "assets/icons/iconTrash.png"
+            iconSupp.className = "iconTrash"
+            const backgrdnIconTrash = document.createElement("img")
+            backgrdnIconTrash.src = "assets/icons/iconBackgrnd.png"
+            backgrdnIconTrash.className = "iconBackgrndTrash"
+            const btnTrash = document.createElement("button")
+            btnTrash.className = "btnTrash"
+            btnTrash.appendChild(backgrdnIconTrash)
+            btnTrash.appendChild(iconSupp)
+            worksElement.appendChild(btnTrash)
+            worksElement.appendChild(imageElement);
+            sectionGalerieModale.appendChild(worksElement);  
+
+            btnTrash.addEventListener("click",function () {
+                worksElement.remove()
+            }) // a lier avec api
+        }
+        
+    }
+    genererWorksModale(works);
 };
+
 // Gestion du mode editon apres connexion
 if (token) {
     editModeHEader();
@@ -169,9 +210,9 @@ if (token) {
     // Ouverture Modale
     const btnOpenModale = document.querySelector("#portfolio h2")
     btnOpenModale.addEventListener("click", function (){
-    modale1();
-})
-
+    modale();
+    });
+    
 }else{
     // Pas de mode edition si token pas présent
         genererButton(categories); 
