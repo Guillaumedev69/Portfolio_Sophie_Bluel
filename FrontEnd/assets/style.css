@@ -326,15 +326,21 @@ footer nav ul li{
 	align-items: center;
 }
 
-.modaleClose{
-	all: unset;
+.modaleHeader{
 	width: 100%;
 	display: flex;
-	justify-content: end;
+	justify-content: end;	
 }
-.closeModale img{
+
+.modaleClose{
+	all: unset;
+	padding-right: 1.88rem;
+	padding-top: 1.62rem;
+}
+.modaleClose img{
 	width: 1.5rem;
 	height: 1.5rem;
+	cursor: pointer;
 }
 
 .modale1Contain h3{
@@ -360,4 +366,48 @@ footer nav ul li{
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
+	cursor: pointer;
 }
+
+.modaleGalerie{
+	display: grid;
+	grid-template-columns: repeat(5,1fr);
+	gap: 0.47rem;
+	padding: 2.88rem 6.58rem 4.21rem 6.58rem;
+}
+
+.imgGalerie{
+	position: relative;
+	z-index: 1;
+	width: 4.92994rem;
+	height: 6.58375rem;
+}
+
+.btnTrash{
+	position: absolute;
+	z-index: 2;
+	margin-left: 3.44rem;
+	margin-top: 0.38rem;
+	width: 1.0625rem;
+	height: 1.0625rem;
+	cursor: pointer;
+}
+.iconBackgrndTrash{
+	position: absolute;
+	z-index: 3;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 1.0625rem;
+	height: 1.0625rem;
+}
+.iconTrash{
+	position: absolute;
+	z-index: 4;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 0.5625rem;
+	height: 0.6875rem;
+}
+
