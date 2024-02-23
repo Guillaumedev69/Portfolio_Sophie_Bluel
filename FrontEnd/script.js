@@ -37,36 +37,46 @@ function genererButton(categories) {
     const sectionFiltres = document.querySelector("#portfolio");
     const divFiltres = document.createElement("div");
     divFiltres.className = "btn-filtres";
-
-    const boutonTous = document.createElement("button");
-    boutonTous.id = "filtres-tous";
-    const nomBoutonTous = document.createElement("h3");
-    nomBoutonTous.innerText = "Tous";
     
     sectionFiltres.appendChild(divFiltres);
-    divFiltres.appendChild(boutonTous);
-    boutonTous.appendChild(nomBoutonTous);
 
+    // Créer et configurer le bouton "Tous"
+    const boutonTous = document.createElement("input");
+    boutonTous.type = "radio";
+    boutonTous.id = "filtres-tous";
+    boutonTous.name = "category";
+    boutonTous.value = "tous";
+    boutonTous.checked = true; // Bouton cliqué par défaut
+    const labelTous = document.createElement("label");
+    labelTous.htmlFor = "filtres-tous";
+    labelTous.innerText = "Tous";
+    divFiltres.appendChild(boutonTous);
+    divFiltres.appendChild(labelTous);
+
+    // Ajouter un gestionnaire d'événements pour le bouton "Tous"
     boutonTous.addEventListener("click", function () {
         document.querySelector(".gallery").innerHTML = "";
         genererWorks(works);
     });
 
+    // Créer et configurer les autres boutons basés sur les catégories
     for (let i = 0; i < categories.length; i++) {
-        const filtresGallery = categories[i];
-        const filtresCategories = document.createElement("button");
-        const nomfiltreCategories = document.createElement("h3");
-        nomfiltreCategories.innerText = filtresGallery.name;
-        filtresCategories.className ="filtres-id";
-        filtresCategories.dataset.categoryId = filtresGallery.id; // Recuperation des id des categories
-        const idCategoryFiltres = document.createElement("p");
-        idCategoryFiltres.innerText = filtresGallery.id;
-        divFiltres.appendChild(filtresCategories);
-        filtresCategories.appendChild(nomfiltreCategories);
+        const categorie = categories[i];
+        const boutonCategorie = document.createElement("input");
+        boutonCategorie.type = "radio";
+        boutonCategorie.id = `filtres-${categorie.id}`;
+        boutonCategorie.name = "category";
+        boutonCategorie.value = categorie.id.toString();
+        const labelCategorie = document.createElement("label");
+        labelCategorie.htmlFor = `filtres-${categorie.id}`;
+        labelCategorie.innerText = categorie.name;
+        divFiltres.appendChild(boutonCategorie);
+        divFiltres.appendChild(labelCategorie);
 
-        filtresCategories.addEventListener("click", function () {
+        // Ajouter un gestionnaire d'événements pour chaque bouton de catégorie
+        boutonCategorie.addEventListener("click", function () {
             const worksFiltres = works.filter(function (work) {
-                return work.categoryId === parseInt(filtresCategories.dataset.categoryId); // conversion de la data pour la comparaison
+                return work.categoryId === parseInt(boutonCategorie.value);
             });
             document.querySelector(".gallery").innerHTML = "";
             genererWorks(worksFiltres);
