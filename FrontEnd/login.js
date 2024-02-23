@@ -77,6 +77,104 @@ formLogIn.appendChild(inputConnexion);
 formLogIn.appendChild(aMdpOublie);
 // fonctionnement du form de login
 
+function alertInfoValide() {
+    const bodyAlert = document.querySelector("body");
+
+    const overlay = document.createElement("div");
+    overlay.className ="overlay";
+
+    const alertContainer = document.createElement("div");
+    alertContainer.className = "alertLogin";
+
+    const alertP = document.createElement("p");
+    alertP.className = "alertLoginMsgValide";
+    alertP.innerText = "Connexion Réussie !";
+
+    alertContainer.appendChild(alertP)
+    overlay.appendChild(alertContainer);
+    bodyAlert.appendChild(overlay);
+}
+
+function alertInfoLoginChampsVide() {
+    const bodyAlert = document.querySelector("body");
+
+    const overlay = document.createElement("div");
+    overlay.className ="overlay";
+
+    const alertContainer = document.createElement("div");
+    alertContainer.className = "alertLogin";
+
+    const alertP = document.createElement("p");
+    alertP.className = "alertLoginMsg";
+    alertP.innerText = "Champs vide ! - 401";
+
+    const btnNouvelEssai = document.createElement("button")
+    btnNouvelEssai.className = "btn-alert"
+    btnNouvelEssai.textContent = "Nouvel Essai"
+
+    btnNouvelEssai.addEventListener("click", function () {
+        overlay.remove()
+    })
+
+    alertContainer.appendChild(alertP)
+    alertContainer.appendChild(btnNouvelEssai)
+    overlay.appendChild(alertContainer);
+    bodyAlert.appendChild(overlay);
+}
+
+function alertInfoLoginIncorrect() {
+    const bodyAlert = document.querySelector("body");
+
+    const overlay = document.createElement("div");
+    overlay.className ="overlay";
+
+    const alertContainer = document.createElement("div");
+    alertContainer.className = "alertLogin";
+
+    const alertP = document.createElement("p");
+    alertP.className = "alertLoginMsg";
+    alertP.innerText = "E-mail et/ou Mot de passe incorrect ! - 401";
+
+    const btnNouvelEssai = document.createElement("button")
+    btnNouvelEssai.className = "btn-alert"
+    btnNouvelEssai.textContent = "Nouvel Essai"
+
+    btnNouvelEssai.addEventListener("click", function () {
+        overlay.remove()
+    })
+
+    alertContainer.appendChild(alertP)
+    alertContainer.appendChild(btnNouvelEssai)
+    overlay.appendChild(alertContainer);
+    bodyAlert.appendChild(overlay);
+}
+
+function alertInfoLoginError() {
+    const bodyAlert = document.querySelector("body");
+
+    const overlay = document.createElement("div");
+    overlay.className ="overlay";
+
+    const alertContainer = document.createElement("div");
+    alertContainer.className = "alertLogin";
+
+    const alertP = document.createElement("p");
+    alertP.className = "alertLoginMsg";
+    alertP.innerText = "Error ! - 404";
+
+    const btnNouvelEssai = document.createElement("button")
+    btnNouvelEssai.className = "btn-alert"
+    btnNouvelEssai.textContent = "Nouvel Essai"
+
+    btnNouvelEssai.addEventListener("click", function () {
+        overlay.remove()
+    })
+
+    alertContainer.appendChild(alertP)
+    alertContainer.appendChild(btnNouvelEssai)
+    overlay.appendChild(alertContainer);
+    bodyAlert.appendChild(overlay);
+}
 formLogIn.addEventListener("submit", async function (SubmitEvent) {
     SubmitEvent.preventDefault();
     
@@ -84,38 +182,40 @@ formLogIn.addEventListener("submit", async function (SubmitEvent) {
     const email = inputEmail.value.trim(); // .trim pour supprimer les caractères speciaux avant/apres 
     const password = inputMdp.value.trim();
     
-    if (email === "" && password === "") {
-        inputEmail.value = "";
-        inputMdp.value = "";
-        alert("Champs vide !");
-        console.log("champs vide");
-    }
-    try { // Envoyer de la demande de connexion
+    try { 
+        if (email === "" || password === "") {
+            alertInfoLoginChampsVide();
+            console.log("Champs vide");
+            return;
+        }
+        
         const swaggerLogin = await fetch("http://localhost:5678/api/users/login", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({email,password}),
         });
+
         if (swaggerLogin.ok) { 
-        const swaggerToken = await swaggerLogin.json(); // Recuperation du token en JSON
-        localStorage.setItem("token", swaggerToken.token); // Mise en mémoire du token
-        inputEmail.value = "";
-        inputMdp.value = "";
-        alert("Connexion réussie !");
-        console.log("Connexion réussie !");
-        setTimeout(() => {
-            window.location.href="index.html"; // Redirection vers la page en 3s
-        }, 3000);
+            const swaggerToken = await swaggerLogin.json(); // Recuperation du token en JSON
+            localStorage.setItem("token", swaggerToken.token); // Mise en mémoire du token
+            inputEmail.value = "";
+            inputMdp.value = "";
+            alertInfoValide();
+            console.log("Connexion réussie !");
+            setTimeout(() => {
+                window.location.href="index.html"; // Redirection vers la page en 3s
+            }, 3000);
         } else {
-        inputEmail.value = "";
-        inputMdp.value = "";
-        alert("E-mail et/ou Mot de passe incorrect error: " + swaggerLogin.status);
-        console.log("E-mail et/ou Mot de passe incorrect");
+            inputEmail.value = "";
+            inputMdp.value = "";
+            alertInfoLoginIncorrect();
+            console.log("E-mail et/ou Mot de passe incorrect");
         }
     } catch (error){
-        alert("Erreur lors de la connexion: "+ swaggerLogin.status);
+        alertInfoLoginError();
     }  
 });
+
 
 // Gestion du Footer
 const navFooter = document.createElement("nav");
