@@ -199,8 +199,7 @@ nav a:hover {
 	padding-top: 3.19rem;
 }
 
-.btn-filtres button{
-	all: unset;
+.btn-filtres label{
 	border: 1px solid #1D6154;
 	border-radius: 3.75rem;	
 	color: #1D6154;
@@ -210,21 +209,40 @@ nav a:hover {
 	height: 2.3125rem;
 }
 
-#filtres-tous{
-	width: 6.25rem;
+.btn-filtres input[type="radio"]{
+    display: none;
 }
-button.filtres-id[data-category-id='1'] {
-	width: 6.25rem;
-}
-button.filtres-id[data-category-id='2'] {
-	width: 9.8125rem;
-}
-button.filtres-id[data-category-id='3'] {
-	width: 12.375rem;
-}
-.btn-filtres button:hover{
-	color: white;
+
+.btn-filtres input[type="radio"]:hover + label,
+.btn-filtres input[type="radio"]:checked + label{
+    color: white;
 	background-color: #1D6154;
+}
+
+#filtres-tous + label{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 6.25rem;
+}
+
+#filtres-1 + label{
+	width: 6.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#filtres-2 + label{
+	width: 9.8125rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#filtres-3 + label{
+	width: 12.375rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #suppFiltres{
