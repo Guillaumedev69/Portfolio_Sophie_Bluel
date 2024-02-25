@@ -122,7 +122,7 @@ function editModeHEader() {
 
 function editModePorfolio() {
     // editMode Porfolio
-        const editPorfolio = document.querySelector("#portfolio h2"); // Récuperation du place dans le h2
+        const editPorfolio = document.querySelector("#portfolio h2"); // Récuperation du placement dans le h2
         const iconEditPortfolio = document.createElement("img"); // intégration de l'icon
         iconEditPortfolio.src = "assets/icons/iconEditBlack.png";
         const spanEditPorfolio = document.createElement("span"); // Création du span
@@ -142,31 +142,31 @@ function editModePorfolio() {
 
 
 function modale() {
-    const bodyModale = document.querySelector("body");
-
-    const overlay = document.createElement("div");
+    // Placement sur le body
+    const bodyModale = document.querySelector("body"); 
+    // Creation de l'arriere plan de la modale
+    const overlay = document.createElement("div"); 
     overlay.className ="overlay";
-
-    const modalecontainer = document.createElement("div");
+    // Creation du container de la modale
+    const modalecontainer = document.createElement("div"); 
     modalecontainer.className = "modale1Contain";
-
+    // Mise en place du Header de la Modale
     const modaleHeader = document.createElement("div");
     modaleHeader.className = "modaleHeader";
     const btnCloseModale = document.createElement("button");
     btnCloseModale.className = "modaleClose";
     const iconCloseModale = document.createElement("img");
     iconCloseModale.src = "assets/icons/iconCLoseBlack.png";
-
+    // Creation de la Galerie photo
     const h3Modale = document.createElement("h3");
     h3Modale.innerHTML = "Galerie photo";
-
     const modaleGalerie = document.createElement("div");
     modaleGalerie.className = "modaleGalerie";
-
+    // Creation du btn ajout photo
     const btnAjoutModale = document.createElement("button");
     btnAjoutModale.className = "modaleBtnAjout";
     btnAjoutModale.textContent = "Ajouter une photo";
-
+    // Mise en lien des differents éléments de la modale
     btnCloseModale.appendChild(iconCloseModale);
     modaleHeader.appendChild(btnCloseModale);
     modalecontainer.appendChild(modaleHeader)
@@ -176,10 +176,22 @@ function modale() {
     overlay.appendChild(modalecontainer);
     bodyModale.appendChild(overlay);
     // Fermer la Modale
+    function fermerModale(e) {
+        const modale = document.querySelector(".modale1Contain");
+        // On verifie que le clique est en dehors de la modale 
+        if (!modale.contains(e.target)) {
+            modalecontainer.remove();
+            overlay.remove();
+        }
+    }
+    overlay.addEventListener("click", fermerModale);
+    // Fermer la modale grâce au btn
     btnCloseModale.addEventListener("click",function () {
         modalecontainer.remove()
         overlay.remove()
     })
+    // Fermer la modale grâce au click en dehors de celle-ci parametrer dans la fonction
+    
     // affichage de la galerie de la modale
     function genererWorksModale(works) {
         const sectionGalerieModale = document.querySelector(".modaleGalerie");
@@ -187,6 +199,7 @@ function modale() {
         for (let i = 0; i < works.length; i++) {
             const figureGalerie = works[i];
             const worksElement = document.createElement("figure");
+            worksElement.id = figureGalerie.id;
             const imageElement = document.createElement("img");
                 imageElement.src = figureGalerie.imageUrl;
                 imageElement.className = "imgGalerie"
@@ -203,12 +216,20 @@ function modale() {
             worksElement.appendChild(btnTrash)
             worksElement.appendChild(imageElement);
             sectionGalerieModale.appendChild(worksElement);  
-
-            btnTrash.addEventListener("click",function () {
-                worksElement.remove()
-            }) // a lier avec api
-        }
-        
+            // Mise en service du btn Trash avec suppression dans l'API
+            btnTrash.addEventListener("click", async function () {
+                
+                // Supprimer l'élément de la galerie modale
+                worksElement.remove();                    
+                    
+                const Id = figureGalerie.id;
+                const deleteWorks = await fetch(`http://localhost:5678/api/works/${Id}`, {
+                    method: "DELETE",
+                    headers: {"Content-Type": "application/json"},
+                });
+                console.log(deleteWorks,Id)
+            });
+        }       
     }
     genererWorksModale(works);
 };
