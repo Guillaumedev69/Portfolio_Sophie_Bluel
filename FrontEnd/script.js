@@ -88,7 +88,6 @@ function genererButton(categories) {
 genererWorks(works);
 
 const token = localStorage.getItem("token");
-console.log(token);
 
 function editModeHEader() {
     // editMode Header
@@ -127,11 +126,10 @@ function editModePorfolio() {
         iconEditPortfolio.src = "assets/icons/iconEditBlack.png";
         const spanEditPorfolio = document.createElement("span"); // Création du span
         const spanTexte = document.createTextNode("modifier");
-        const aSpanTexte = document.createElement("a"); // Création d'un lien vers la modal
-        aSpanTexte.href ="#";
-        aSpanTexte.appendChild(iconEditPortfolio);
-        aSpanTexte.appendChild(spanTexte); // Mise en href du texte et de l'icon
-        spanEditPorfolio.appendChild(aSpanTexte); // Appel du href dans le Span
+        const btnSpanTexte = document.createElement("button");
+        btnSpanTexte.appendChild(iconEditPortfolio);
+        btnSpanTexte.appendChild(spanTexte); // Mise en bouton du texte et de l'icon
+        spanEditPorfolio.appendChild(btnSpanTexte); // Appel du href dans le Span
         editPorfolio.appendChild(spanEditPorfolio); // mise a la suite du H2 le Span
 
     // Suppression des filtres
@@ -157,11 +155,15 @@ function modale() {
     btnCloseModale.className = "modaleClose";
     const iconCloseModale = document.createElement("img");
     iconCloseModale.src = "assets/icons/iconCLoseBlack.png";
-    // Creation de la Galerie photo
+    // H3 pour la modale d'accueil
     const h3Modale = document.createElement("h3");
-    h3Modale.innerHTML = "Galerie photo";
+    h3Modale.innerText = "Galerie photo";
+    // Creation galerie
     const modaleGalerie = document.createElement("div");
     modaleGalerie.className = "modaleGalerie";
+    //ligne de separation
+    const ligneSeparation = document.createElement("div")
+    ligneSeparation.className = "ligneSepaModale"
     // Creation du btn ajout photo
     const btnAjoutModale = document.createElement("button");
     btnAjoutModale.className = "modaleBtnAjout";
@@ -172,26 +174,30 @@ function modale() {
     modalecontainer.appendChild(modaleHeader)
     modalecontainer.appendChild(h3Modale);
     modalecontainer.appendChild(modaleGalerie);
+    modalecontainer.appendChild(ligneSeparation)
     modalecontainer.appendChild(btnAjoutModale);
     overlay.appendChild(modalecontainer);
     bodyModale.appendChild(overlay);
-    // Fermer la Modale
-    function fermerModale(e) {
+    
+    function fermerModale(event) {
         const modale = document.querySelector(".modale1Contain");
-        // On verifie que le clique est en dehors de la modale 
-        if (!modale.contains(e.target)) {
+        const overlay = document.querySelector(".overlay");
+        
+        // Vérifier si modale est null avant d'utiliser la methode
+        // methode pour eviter un defaut dans la console
+        //"Uncaught TypeError: Cannot read properties of null (reading 'contains')".
+        if (modale && (event.target === overlay || (!modale.contains(event.target) && event.target !== modale))) {
             modalecontainer.remove();
             overlay.remove();
         }
     }
-    overlay.addEventListener("click", fermerModale);
+    
+    overlay.addEventListener("click", fermerModale)
     // Fermer la modale grâce au btn
     btnCloseModale.addEventListener("click",function () {
         modalecontainer.remove()
         overlay.remove()
     })
-    // Fermer la modale grâce au click en dehors de celle-ci parametrer dans la fonction
-    
     // affichage de la galerie de la modale
     function genererWorksModale(works) {
         const sectionGalerieModale = document.querySelector(".modaleGalerie");
@@ -217,33 +223,119 @@ function modale() {
             worksElement.appendChild(imageElement);
             sectionGalerieModale.appendChild(worksElement);  
             // Mise en service du btn Trash avec suppression dans l'API
-            btnTrash.addEventListener("click", async function () {
-                
+            btnTrash.addEventListener("click", async function () {                
                 // Supprimer l'élément de la galerie modale
-                worksElement.remove();                    
-                    
+                worksElement.remove(); 
+                            
                 const Id = figureGalerie.id;
                 const deleteWorks = await fetch(`http://localhost:5678/api/works/${Id}`, {
                     method: "DELETE",
-                    headers: {"Content-Type": "application/json"},
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },                
                 });
-                console.log(deleteWorks,Id)
             });
         }       
     }
     genererWorksModale(works);
+    //ouverture mode ajout de fichier
+    btnAjoutModale.addEventListener("click", function () {
+        modalecontainer.remove();
+        overlay.remove();
+        modaleAjoutWorks();    
+    });
 };
+
+function modaleAjoutWorks() {
+    const bodyModale = document.querySelector("body"); 
+    // Creation de l'arriere plan de la modale
+    const overlay = document.createElement("div"); 
+    overlay.className ="overlay";
+    // Creation du container de la modale
+    const modaleContainerAjout = document.createElement("div"); 
+    modaleContainerAjout.className = "modaleAjoutContain";
+    // Creation div pour les icons
+    const divIconModaleAjout = document.createElement("div")
+    divIconModaleAjout.className = "divIconRetourClose"
+    // btn pour revenir à la premiere modale
+    const btnRetourModale = document.createElement("button");
+    btnRetourModale.className = "modaleRetour";
+    const iconRetourModale = document.createElement("img");
+    iconRetourModale.src = "assets/icons/iconReturn.png";
+    // btn pour fermer la modale
+    const btnCloseModale = document.createElement("button");
+    btnCloseModale.className = "modaleClose";
+    const iconCloseModale = document.createElement("img");
+    iconCloseModale.src = "assets/icons/iconCLoseBlack.png";
+    // H3 pour la modale d'ajout de photo
+    const ajoutModaleH3 = document.createElement("h3");
+    ajoutModaleH3.innerText = "Ajout photo";
+    // Creation du form d'ajout de works
+    const ajoutModaleForm = document.createElement("form");
+    ajoutModaleForm.id = "formAjoutFichier"
+    ajoutModaleForm.method = "POST"
+    const divAjoutFichier = document.createElement("div")
+    divAjoutFichier.className = "divAjoutFichier"
+    const divAjoutFichierImg = document.createElement("img")
+    divAjoutFichierImg.src = "assets/icons/iconAjoutFichierImg.png"
+    const ajoutModaleInputAjoutImg = document.createElement("input");
+    ajoutModaleInputAjoutImg.setAttribute("type","file");
+    ajoutModaleInputAjoutImg.setAttribute("id","nouvelleImage");
+    const ajoutModaleLabelTitre = document.createElement("label")
+    ajoutModaleLabelTitre.textContent = "Titre";
+    const ajoutModaleInputTitre = document.createElement("input");
+    ajoutModaleInputTitre.setAttribute("type","texte");
+    const ajoutModaleLabelCatégorie = document.createElement("label");
+    ajoutModaleLabelCatégorie.textContent = "Catégorie";
+    const ajoutModaleInputCatégorie = document.createElement("input");
+    ajoutModaleInputCatégorie.setAttribute("type","number");
+    const ligneSeparation = document.createElement("div")
+    ligneSeparation.className = "ligneSepaModale"
+    const ajoutModaleSubmitValider = document.createElement("button");
+    ajoutModaleSubmitValider.type = "submit";
+    ajoutModaleSubmitValider.textContent = "Valider";
+    btnRetourModale.appendChild(iconRetourModale);
+    divIconModaleAjout.appendChild(btnRetourModale);
+    btnCloseModale.appendChild(iconCloseModale);
+    divIconModaleAjout.appendChild(btnCloseModale);
+    modaleContainerAjout.appendChild(divIconModaleAjout)
+    modaleContainerAjout.appendChild(ajoutModaleH3);
+    modaleContainerAjout.appendChild(ajoutModaleForm);
+    divAjoutFichier.appendChild(divAjoutFichierImg)
+    divAjoutFichier.appendChild(ajoutModaleInputAjoutImg)
+    ajoutModaleForm.appendChild(divAjoutFichier)
+    ajoutModaleForm.appendChild(ajoutModaleLabelTitre);
+    ajoutModaleForm.appendChild(ajoutModaleInputTitre);
+    ajoutModaleForm.appendChild(ajoutModaleLabelCatégorie);
+    ajoutModaleForm.appendChild(ajoutModaleInputCatégorie);
+    ajoutModaleForm.appendChild(ligneSeparation)
+    ajoutModaleForm.appendChild(ajoutModaleSubmitValider);
+    overlay.appendChild(modaleContainerAjout);
+    bodyModale.appendChild(overlay);
+
+    btnCloseModale.addEventListener("click",function () {
+        modaleContainerAjout.remove()
+        overlay.remove()
+    })
+
+    btnRetourModale.addEventListener("click" , function(){
+        modaleContainerAjout.remove()
+        overlay.remove()
+        modale()
+    })
+}
+
 
 // Gestion du mode editon apres connexion
 if (token) {
     editModeHEader();
     editModePorfolio();
     // Ouverture Modale
-    const btnOpenModale = document.querySelector("#portfolio h2")
+    const btnOpenModale = document.querySelector("#portfolio h2");
     btnOpenModale.addEventListener("click", function (){
-    modale();
+        modale();
     });
-    
 }else{
     // Pas de mode edition si token pas présent
         genererButton(categories); 
