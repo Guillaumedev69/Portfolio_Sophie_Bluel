@@ -15,7 +15,7 @@ spanH1.innerText = "Architecte d'intérieur";
 h1.appendChild(spanH1); // Ajout du span au h1
 const navHeader = document.createElement("nav"); // Creation du nav + ul + li
 const ulNavHeader = document.createElement("ul");
-const link = ["projet", "contact","login"];
+const link = ["projets", "contact","login"];
 const linkA = ["index.html#portfolio","index.html#contact","login.html"];
 const iconIstagram = document.createElement("img"); // Integration logo insta
 iconIstagram.src = "assets/icons/instagram.png";
@@ -106,7 +106,7 @@ function alertInfoLoginChampsVide() {
 
     const alertP = document.createElement("p");
     alertP.className = "alertLoginMsg";
-    alertP.innerText = "Champs vide ! - 401";
+    alertP.innerText = "Champs vide !";
 
     const btnNouvelEssai = document.createElement("button")
     btnNouvelEssai.className = "btn-alert"
@@ -116,8 +116,8 @@ function alertInfoLoginChampsVide() {
         overlay.remove()
     })
 
-    alertContainer.appendChild(alertP)
-    alertContainer.appendChild(btnNouvelEssai)
+    alertContainer.appendChild(alertP);
+    alertContainer.appendChild(btnNouvelEssai);
     overlay.appendChild(alertContainer);
     bodyAlert.appendChild(overlay);
 }
@@ -135,16 +135,16 @@ function alertInfoLoginIncorrect() {
     alertP.className = "alertLoginMsg";
     alertP.innerText = "E-mail et/ou Mot de passe incorrect ! - 401";
 
-    const btnNouvelEssai = document.createElement("button")
-    btnNouvelEssai.className = "btn-alert"
-    btnNouvelEssai.textContent = "Nouvel Essai"
+    const btnNouvelEssai = document.createElement("button");
+    btnNouvelEssai.className = "btn-alert";
+    btnNouvelEssai.textContent = "Nouvel Essai";
 
     btnNouvelEssai.addEventListener("click", function () {
-        overlay.remove()
+        overlay.remove();
     })
 
-    alertContainer.appendChild(alertP)
-    alertContainer.appendChild(btnNouvelEssai)
+    alertContainer.appendChild(alertP);
+    alertContainer.appendChild(btnNouvelEssai);
     overlay.appendChild(alertContainer);
     bodyAlert.appendChild(overlay);
 }
@@ -162,16 +162,16 @@ function alertInfoLoginError() {
     alertP.className = "alertLoginMsg";
     alertP.innerText = "Error ! - 404";
 
-    const btnNouvelEssai = document.createElement("button")
-    btnNouvelEssai.className = "btn-alert"
-    btnNouvelEssai.textContent = "Nouvel Essai"
+    const btnNouvelEssai = document.createElement("button");
+    btnNouvelEssai.className = "btn-alert";
+    btnNouvelEssai.textContent = "Nouvel Essai";
 
     btnNouvelEssai.addEventListener("click", function () {
         overlay.remove()
     })
 
-    alertContainer.appendChild(alertP)
-    alertContainer.appendChild(btnNouvelEssai)
+    alertContainer.appendChild(alertP);
+    alertContainer.appendChild(btnNouvelEssai);
     overlay.appendChild(alertContainer);
     bodyAlert.appendChild(overlay);
 }
@@ -203,8 +203,8 @@ formLogIn.addEventListener("submit", async function (SubmitEvent) {
             alertInfoValide();
             console.log("Connexion réussie !");
             setTimeout(() => {
-                window.location.href="index.html"; // Redirection vers la page en 3s
-            }, 3000);
+                window.location.href="index.html"; // Redirection vers la page en 1s
+            }, 1000);
         } else {
             inputEmail.value = "";
             inputMdp.value = "";
@@ -215,7 +215,6 @@ formLogIn.addEventListener("submit", async function (SubmitEvent) {
         alertInfoLoginError();
     }  
 });
-
 
 // Gestion du Footer
 const navFooter = document.createElement("nav");
