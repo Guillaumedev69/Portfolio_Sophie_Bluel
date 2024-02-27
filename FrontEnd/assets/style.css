@@ -173,24 +173,25 @@ nav a:hover {
 	flex-direction: row;
 	margin-bottom: 1em;
 }
-#portfolio h2 span a{
+#portfolio h2 span button{
+	all: unset;
 	display: flex;
 	align-items: center;
 	color: #000;
 	font-family: "Work Sans";
+	margin-left: 1.94rem;
 	font-size: 0.875rem;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
 	text-decoration: none;
 	text-align: center;
-	padding-left: 1.94rem;
+	cursor: pointer;
 }
 #portfolio h2 img{
 	height: 0.97375rem;
 	padding-right: 0.65rem;
 }
-
 .btn-filtres{
 	display: flex;
 	justify-content: center;
@@ -329,7 +330,7 @@ footer nav ul li{
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.30);
 }
-.modale1Contain{
+.modale1Contain, .modaleAjoutContain{
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -343,16 +344,27 @@ footer nav ul li{
 	align-items: center;
 }
 
+
 .modaleHeader{
 	width: 100%;
 	display: flex;
 	justify-content: end;	
 }
-
-.modaleClose{
+.divIconRetourClose{
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+.modaleClose ,.modaleRetour{
 	all: unset;
 	padding-right: 1.88rem;
 	padding-top: 1.62rem;
+	padding-left: 1.88rem;
+}
+.modaleRetour{
+	width: 1.3125rem;
+	height: 1.3125rem;
+	cursor: pointer;
 }
 .modaleClose img{
 	width: 1.5rem;
@@ -360,7 +372,7 @@ footer nav ul li{
 	cursor: pointer;
 }
 
-.modale1Contain h3{
+.modale1Contain h3, .modaleAjoutContain h3{
 	color: #000;
 	text-align: center;
 	font-family: "Work Sans";
@@ -368,6 +380,14 @@ footer nav ul li{
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+}
+
+/**Ligne sepa sur les deux modales**/
+.ligneSepaModale{
+	width: 26.25rem;
+	height: 0.0625rem;
+	background: #B3B3B3;
+	margin-bottom: 2.38rem;
 }
 
 .modaleBtnAjout{
@@ -426,5 +446,10 @@ footer nav ul li{
 	transform: translate(-50%,-50%);
 	width: 0.5625rem;
 	height: 0.6875rem;
+}
+
+#formAjoutFichier{
+	display: flex;
+	flex-direction: column;
 }
 
