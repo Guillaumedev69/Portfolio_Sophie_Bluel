@@ -177,7 +177,7 @@ function modale() {
     modalecontainer.appendChild(btnAjoutModale);
     overlay.appendChild(modalecontainer);
     bodyModale.appendChild(overlay);
-    
+    // Fermer modale si click à l'exterieur de celle-ci 
     function fermerModale(event) {
         const modale = document.querySelector(".modale1Contain");
         const overlay = document.querySelector(".overlay");
@@ -190,7 +190,6 @@ function modale() {
             overlay.remove();
         }
     }
-    
     overlay.addEventListener("click", fermerModale)
     // Fermer la modale grâce au btn
     btnCloseModale.addEventListener("click",function () {
@@ -305,6 +304,8 @@ function modaleAjoutWorks() {
     const ajoutModaleInputTitre = document.createElement("input");
     ajoutModaleInputTitre.setAttribute("type","texte");
     const ajoutModaleLabelCatégorie = document.createElement("label");
+    // Desactivation du btn valider si champs pas remplis
+    
     // Creation selection d'une categorie
     ajoutModaleLabelCatégorie.textContent = "Catégorie";
     const ajoutModaleSelectCatégorie = document.createElement("select");
@@ -320,7 +321,6 @@ function modaleAjoutWorks() {
         // Ajout des options au select en recuperer les categories de l'API
         ajoutModaleSelectCatégorie.appendChild(categoriesName);
     }
-
     // Creation de la ligne de separation
     const ligneSeparation = document.createElement("div");
     ligneSeparation.className = "ligneSepaModale2";
@@ -328,7 +328,7 @@ function modaleAjoutWorks() {
     const ajoutModaleBtnValider = document.createElement("button");
     ajoutModaleBtnValider.setAttribute("type","submit");
     ajoutModaleBtnValider.textContent = "Valider";
-
+    // appel des elements
     btnRetourModale.appendChild(iconRetourModale);
     ajoutModaleHeader.appendChild(btnRetourModale);
     btnCloseModale.appendChild(iconCloseModale);
@@ -349,11 +349,25 @@ function modaleAjoutWorks() {
     divAjoutFichierInfos.appendChild(ajoutModaleSelectCatégorie);
     // ligne de separation
     ajoutModaleForm.appendChild(ligneSeparation);
-    // Btn de valdiaiton du form
+    // Btn de valdiation du form
     ajoutModaleForm.appendChild(ajoutModaleBtnValider);
     // Localisatione et arriere plan
     overlay.appendChild(modaleContainerAjout);
     bodyModale.appendChild(overlay);
+
+    function fermerModaleAjout(event) {
+        const modale = document.querySelector(".modaleAjoutContain");
+        const overlay = document.querySelector(".overlay");
+        
+        // Vérifier si modale est null avant d'utiliser la methode
+        // methode pour eviter un defaut dans la console
+        //"Uncaught TypeError: Cannot read properties of null (reading 'contains')".
+        if (modale && (event.target === overlay || (!modale.contains(event.target) && event.target !== modale))) {
+            modaleContainerAjout.remove();
+            overlay.remove();
+        }
+    }
+    overlay.addEventListener("click", fermerModaleAjout)
     // Fermer la modale
     btnCloseModale.addEventListener("click",function () {
         modaleContainerAjout.remove();
