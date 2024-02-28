@@ -33,6 +33,7 @@ function genererWorks(works) {
 const swaggerCategories = await fetch("http://localhost:5678/api/categories");
 const categories = await swaggerCategories.json();
 
+
 function genererButton(categories) {
     const sectionFiltres = document.querySelector("#portfolio");
     const divFiltres = document.createElement("div");
@@ -136,8 +137,6 @@ function editModePorfolio() {
         const suppFiltres = document.getElementsByClassName(".btn-filtres");
         suppFiltres.className = "suppFiltres";
 };
-
-
 
 function modale() {
     // Placement sur le body
@@ -247,6 +246,7 @@ function modale() {
     });
 };
 
+
 function modaleAjoutWorks() {
     const bodyModale = document.querySelector("body"); 
     // Creation de l'arriere plan de la modale
@@ -256,8 +256,8 @@ function modaleAjoutWorks() {
     const modaleContainerAjout = document.createElement("div"); 
     modaleContainerAjout.className = "modaleAjoutContain";
     // Creation div pour les icons
-    const divIconModaleAjout = document.createElement("div")
-    divIconModaleAjout.className = "divIconRetourClose"
+    const ajoutModaleHeader = document.createElement("div");
+    ajoutModaleHeader.className = "divIconRetourClose";
     // btn pour revenir à la premiere modale
     const btnRetourModale = document.createElement("button");
     btnRetourModale.className = "modaleRetour";
@@ -273,58 +273,173 @@ function modaleAjoutWorks() {
     ajoutModaleH3.innerText = "Ajout photo";
     // Creation du form d'ajout de works
     const ajoutModaleForm = document.createElement("form");
-    ajoutModaleForm.id = "formAjoutFichier"
-    ajoutModaleForm.method = "POST"
-    const divAjoutFichier = document.createElement("div")
-    divAjoutFichier.className = "divAjoutFichier"
-    const divAjoutFichierImg = document.createElement("img")
-    divAjoutFichierImg.src = "assets/icons/iconAjoutFichierImg.png"
+    ajoutModaleForm.id = "formAjoutFichier";
+    ajoutModaleForm.method = "POST";
+    // Creation de la div pour l'ajout de l'image
+    const divAjoutFichier = document.createElement("div");
+    divAjoutFichier.className = "divAjoutFichier";
+    // Icon pour l'ajout d'image
+    const divAjoutFichierImg = document.createElement("img");
+    divAjoutFichierImg.src = "assets/icons/iconAjoutFichierImg.png";
+    // Bouton pour télécharger l'image
+    const ajoutModaleLabelAjoutImg = document.createElement("label");
+    ajoutModaleLabelAjoutImg.setAttribute("for", "ajoutFichierInput");
+    ajoutModaleLabelAjoutImg.textContent = "+ Ajouter photo";
+    ajoutModaleLabelAjoutImg.className = "ajoutFichierLabel";
     const ajoutModaleInputAjoutImg = document.createElement("input");
-    ajoutModaleInputAjoutImg.setAttribute("type","file");
-    ajoutModaleInputAjoutImg.setAttribute("id","nouvelleImage");
-    const ajoutModaleLabelTitre = document.createElement("label")
+    ajoutModaleInputAjoutImg.id = "ajoutFichierInput";
+    ajoutModaleInputAjoutImg.setAttribute("type", "file");
+    // Limiter les types de fichiers acceptés (jpeg, png)
+    ajoutModaleInputAjoutImg.setAttribute("accept", ".jpg,.jpeg,.png");
+    // Limiter la taille maximale du fichier à 4 Mo (avec calcul car la valeur est en octets)
+    ajoutModaleInputAjoutImg.setAttribute("maxFileSize", 4 * 1024 * 1024);
+    // p avec les specification d'image autorisées
+    const pAjoutFichier = document.createElement("p");
+    pAjoutFichier.textContent = "jpg, png : 4mo max";
+    const maxFileSize = 4 * 1024 * 1024;
+    // Creation des deux zones saisie pour le titre de l'image et la catégorie
+    const divAjoutFichierInfos = document.createElement("div");
+    divAjoutFichierInfos.className = "divAjoutFichierInfos";
+    const ajoutModaleLabelTitre = document.createElement("label");
     ajoutModaleLabelTitre.textContent = "Titre";
     const ajoutModaleInputTitre = document.createElement("input");
     ajoutModaleInputTitre.setAttribute("type","texte");
     const ajoutModaleLabelCatégorie = document.createElement("label");
+    // Creation selection d'une categorie
     ajoutModaleLabelCatégorie.textContent = "Catégorie";
-    const ajoutModaleInputCatégorie = document.createElement("input");
-    ajoutModaleInputCatégorie.setAttribute("type","number");
-    const ligneSeparation = document.createElement("div")
-    ligneSeparation.className = "ligneSepaModale"
-    const ajoutModaleSubmitValider = document.createElement("button");
-    ajoutModaleSubmitValider.type = "submit";
-    ajoutModaleSubmitValider.textContent = "Valider";
+    const ajoutModaleSelectCatégorie = document.createElement("select");
+    // Creation boucle pour options
+    for (let i = 0; i < categories.length; i++) {
+        // Recuperation de la liste des catégories
+        const category = categories[i];
+        // Creation des options
+        const categoriesName = document.createElement("option");
+        // Ajout des valeur en lien avec la data
+        categoriesName.value = category.id;
+        categoriesName.text = category.name;
+        // Ajout des options au select en recuperer les categories de l'API
+        ajoutModaleSelectCatégorie.appendChild(categoriesName);
+    }
+
+    // Creation de la ligne de separation
+    const ligneSeparation = document.createElement("div");
+    ligneSeparation.className = "ligneSepaModale2";
+    // bouton pour envoyer le Form
+    const ajoutModaleBtnValider = document.createElement("button");
+    ajoutModaleBtnValider.setAttribute("type","submit");
+    ajoutModaleBtnValider.textContent = "Valider";
+
     btnRetourModale.appendChild(iconRetourModale);
-    divIconModaleAjout.appendChild(btnRetourModale);
+    ajoutModaleHeader.appendChild(btnRetourModale);
     btnCloseModale.appendChild(iconCloseModale);
-    divIconModaleAjout.appendChild(btnCloseModale);
-    modaleContainerAjout.appendChild(divIconModaleAjout)
+    ajoutModaleHeader.appendChild(btnCloseModale);
+    modaleContainerAjout.appendChild(ajoutModaleHeader);
     modaleContainerAjout.appendChild(ajoutModaleH3);
     modaleContainerAjout.appendChild(ajoutModaleForm);
-    divAjoutFichier.appendChild(divAjoutFichierImg)
-    divAjoutFichier.appendChild(ajoutModaleInputAjoutImg)
-    ajoutModaleForm.appendChild(divAjoutFichier)
-    ajoutModaleForm.appendChild(ajoutModaleLabelTitre);
-    ajoutModaleForm.appendChild(ajoutModaleInputTitre);
-    ajoutModaleForm.appendChild(ajoutModaleLabelCatégorie);
-    ajoutModaleForm.appendChild(ajoutModaleInputCatégorie);
-    ajoutModaleForm.appendChild(ligneSeparation)
-    ajoutModaleForm.appendChild(ajoutModaleSubmitValider);
+    divAjoutFichier.appendChild(divAjoutFichierImg);
+    divAjoutFichier.appendChild(ajoutModaleLabelAjoutImg);
+    divAjoutFichier.appendChild(ajoutModaleInputAjoutImg);
+    divAjoutFichier.appendChild(pAjoutFichier);
+    ajoutModaleForm.appendChild(divAjoutFichier);
+    ajoutModaleForm.appendChild(divAjoutFichierInfos);
+    // div pour les infos du nouveau fichier
+    divAjoutFichierInfos.appendChild(ajoutModaleLabelTitre);
+    divAjoutFichierInfos.appendChild(ajoutModaleInputTitre);
+    divAjoutFichierInfos.appendChild(ajoutModaleLabelCatégorie);
+    divAjoutFichierInfos.appendChild(ajoutModaleSelectCatégorie);
+    // ligne de separation
+    ajoutModaleForm.appendChild(ligneSeparation);
+    // Btn de valdiaiton du form
+    ajoutModaleForm.appendChild(ajoutModaleBtnValider);
+    // Localisatione et arriere plan
     overlay.appendChild(modaleContainerAjout);
     bodyModale.appendChild(overlay);
-
+    // Fermer la modale
     btnCloseModale.addEventListener("click",function () {
-        modaleContainerAjout.remove()
-        overlay.remove()
+        modaleContainerAjout.remove();
+        overlay.remove();
     })
-
+    // Revenir à la modale principale
     btnRetourModale.addEventListener("click" , function(){
-        modaleContainerAjout.remove()
-        overlay.remove()
-        modale()
+        modaleContainerAjout.remove();
+        overlay.remove();
+        modale();
     })
+    // Remplacement de la div ajout d'image par l'image uploader
+    ajoutModaleInputAjoutImg.addEventListener("change", function () {
+        const file = ajoutModaleInputAjoutImg.files[0];
+        const divImgAjoutee = document.querySelector(".divAjoutFichier");
+        const imgAjoutee = document.createElement("img");
+        imgAjoutee.id = "imgAjoutee";
+        imgAjoutee.src = URL.createObjectURL(file);
+        divImgAjoutee.appendChild(imgAjoutee);
+        divAjoutFichierImg.remove();
+        ajoutModaleLabelAjoutImg.remove();
+        ajoutModaleInputAjoutImg.remove();
+        pAjoutFichier.remove();
+        // Verification du type
+        const regexFormatFichier = /\.(jpg|jpeg|png)$/i;
+        const nomFichier = ajoutModaleInputAjoutImg.value;
+        if (!regexFormatFichier.test(nomFichier)) {
+        alertInfoFichier();
+        overlay.remove();
+        console.log("mauvais format");
+        }
+        // Verification de la taille max
+        const fichier = ajoutModaleInputAjoutImg.files[0];
+        if (fichier && fichier.size > maxFileSize) {
+            alertInfoFichierSize();
+            overlay.remove();
+            console.log("Document trop volumineux");
+        }
+    });
+    // Alerte en cas de mauvais format
+    function alertInfoFichier() {
+            const bodyAlert = document.querySelector("body");        
+            const overlay = document.createElement("div");
+            overlay.className ="overlay";        
+            const alertContainer = document.createElement("div");
+            alertContainer.className = "alertFormatFichier";        
+            const alertP = document.createElement("p");
+            alertP.innerText = "Le format sélectionné n'est pas le bon !";
+            const btnAlertFormat = document.createElement("button");
+            btnAlertFormat.textContent = "Veuillez choisir le bon format.";        
+            alertContainer.appendChild(alertP);
+            alertContainer.appendChild(btnAlertFormat);
+            overlay.appendChild(alertContainer);
+            bodyAlert.appendChild(overlay);
+            // Bouton pour revenir a la modale d'ajout
+            btnAlertFormat.addEventListener("click", function () {
+                overlay.remove()
+                alertContainer.remove();
+                modaleAjoutWorks()
+            });
+    }
+    // Alerte en cas de mauvaise taille max
+    function alertInfoFichierSize() {
+        const bodyAlert = document.querySelector("body");    
+        const overlay = document.createElement("div");
+        overlay.className ="overlay";    
+        const alertContainer = document.createElement("div");
+        alertContainer.className = "alertFormatFichier";    
+        const alertP = document.createElement("p");
+        alertP.innerText = "Capacité maximum atteinte !";    
+        const btnAlertFormat = document.createElement("button");
+        btnAlertFormat.textContent = "Veuillez choisir un fichier moins volumineux";    
+        alertContainer.appendChild(alertP);
+        alertContainer.appendChild(btnAlertFormat);
+        overlay.appendChild(alertContainer);
+        bodyAlert.appendChild(overlay);
+        // Bouton pour revenir a la modale d'ajout
+        btnAlertFormat.addEventListener("click", function () {
+            overlay.remove()
+            alertContainer.remove();
+            modaleAjoutWorks()
+        });
 }
+    
+}
+
 
 
 // Gestion du mode editon apres connexion
@@ -341,3 +456,4 @@ if (token) {
         genererButton(categories); 
         genererWorks(works);
 }
+
