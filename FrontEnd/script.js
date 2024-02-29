@@ -1,10 +1,8 @@
 const swaggerWorks = await fetch("http://localhost:5678/api/works");
 const works = await swaggerWorks.json();
-
 function genererWorks(works) {
     const sectionGallery = document.querySelector("#portfolio");
     let divGallery = sectionGallery.querySelector(".gallery");
-
     // Création de la galerie si il n'y en a pas
     if (!divGallery) {
         divGallery = document.createElement("div");
@@ -13,8 +11,6 @@ function genererWorks(works) {
         // Suppression de la galerie si existante
         divGallery.innerHTML = "";
     }
-
-
     for (let i = 0; i < works.length; i++) {
         const figureGallery = works[i];
         const worksElement = document.createElement("figure");
@@ -26,14 +22,11 @@ function genererWorks(works) {
         worksElement.appendChild(imageElement);
         worksElement.appendChild(nomElement);
         divGallery.appendChild(worksElement);
-    }
+    };
     sectionGallery.appendChild(divGallery);
 }
-
 const swaggerCategories = await fetch("http://localhost:5678/api/categories");
 const categories = await swaggerCategories.json();
-
-
 function genererButton(categories) {
     const sectionFiltres = document.querySelector("#portfolio");
     const divFiltres = document.createElement("div");
@@ -84,12 +77,9 @@ function genererButton(categories) {
         });
     }
 }
-
 // fonction appelée apres categories pour avoir les filtres au-dessus
 genererWorks(works);
-
 const token = localStorage.getItem("token");
-
 function editModeHEader() {
     // editMode Header
         const editNewHeader = document.querySelector("header");
@@ -119,7 +109,6 @@ function editModeHEader() {
             localStorage.removeItem("token");
         })
 };
-
 function editModePorfolio() {
     // editMode Porfolio
         const editPorfolio = document.querySelector("#portfolio h2"); // Récuperation du placement dans le h2
@@ -137,7 +126,6 @@ function editModePorfolio() {
         const suppFiltres = document.getElementsByClassName(".btn-filtres");
         suppFiltres.className = "suppFiltres";
 };
-
 function modale() {
     // Placement sur le body
     const bodyModale = document.querySelector("body"); 
@@ -161,8 +149,8 @@ function modale() {
     const modaleGalerie = document.createElement("div");
     modaleGalerie.className = "modaleGalerie";
     //ligne de separation
-    const ligneSeparation = document.createElement("div")
-    ligneSeparation.className = "ligneSepaModale"
+    const ligneSeparation = document.createElement("div");
+    ligneSeparation.className = "ligneSepaModale";
     // Creation du btn ajout photo
     const btnAjoutModale = document.createElement("button");
     btnAjoutModale.className = "modaleBtnAjout";
@@ -173,7 +161,7 @@ function modale() {
     modalecontainer.appendChild(modaleHeader)
     modalecontainer.appendChild(h3Modale);
     modalecontainer.appendChild(modaleGalerie);
-    modalecontainer.appendChild(ligneSeparation)
+    modalecontainer.appendChild(ligneSeparation);
     modalecontainer.appendChild(btnAjoutModale);
     overlay.appendChild(modalecontainer);
     bodyModale.appendChild(overlay);
@@ -193,31 +181,30 @@ function modale() {
     overlay.addEventListener("click", fermerModale)
     // Fermer la modale grâce au btn
     btnCloseModale.addEventListener("click",function () {
-        modalecontainer.remove()
-        overlay.remove()
+        modalecontainer.remove();
+        overlay.remove();
     })
     // affichage de la galerie de la modale
     function genererWorksModale(works) {
         const sectionGalerieModale = document.querySelector(".modaleGalerie");
-
         for (let i = 0; i < works.length; i++) {
             const figureGalerie = works[i];
             const worksElement = document.createElement("figure");
             worksElement.id = figureGalerie.id;
             const imageElement = document.createElement("img");
                 imageElement.src = figureGalerie.imageUrl;
-                imageElement.className = "imgGalerie"
-            const iconSupp = document.createElement("img")
-            iconSupp.src = "assets/icons/iconTrash.png"
-            iconSupp.className = "iconTrash"
-            const backgrdnIconTrash = document.createElement("img")
-            backgrdnIconTrash.src = "assets/icons/iconBackgrnd.png"
-            backgrdnIconTrash.className = "iconBackgrndTrash"
-            const btnTrash = document.createElement("button")
-            btnTrash.className = "btnTrash"
-            btnTrash.appendChild(backgrdnIconTrash)
-            btnTrash.appendChild(iconSupp)
-            worksElement.appendChild(btnTrash)
+                imageElement.className = "imgGalerie";
+            const iconSupp = document.createElement("img");
+            iconSupp.src = "assets/icons/iconTrash.png";
+            iconSupp.className = "iconTrash";
+            const backgrdnIconTrash = document.createElement("img");
+            backgrdnIconTrash.src = "assets/icons/iconBackgrnd.png";
+            backgrdnIconTrash.className = "iconBackgrndTrash";
+            const btnTrash = document.createElement("button");
+            btnTrash.className = "btnTrash";
+            btnTrash.appendChild(backgrdnIconTrash);
+            btnTrash.appendChild(iconSupp);
+            worksElement.appendChild(btnTrash);
             worksElement.appendChild(imageElement);
             sectionGalerieModale.appendChild(worksElement);  
             // Mise en service du btn Trash avec suppression dans l'API
@@ -244,8 +231,6 @@ function modale() {
         modaleAjoutWorks();    
     });
 };
-
-
 function modaleAjoutWorks() {
     const bodyModale = document.querySelector("body"); 
     // Creation de l'arriere plan de la modale
@@ -304,8 +289,6 @@ function modaleAjoutWorks() {
     const ajoutModaleInputTitre = document.createElement("input");
     ajoutModaleInputTitre.setAttribute("type","texte");
     const ajoutModaleLabelCatégorie = document.createElement("label");
-    // Desactivation du btn valider si champs pas remplis
-    
     // Creation selection d'une categorie
     ajoutModaleLabelCatégorie.textContent = "Catégorie";
     const ajoutModaleSelectCatégorie = document.createElement("select");
@@ -362,24 +345,55 @@ function modaleAjoutWorks() {
         // Vérifier si modale est null avant d'utiliser la methode
         // methode pour eviter un defaut dans la console
         //"Uncaught TypeError: Cannot read properties of null (reading 'contains')".
-        if (modale && (event.target === overlay || (!modale.contains(event.target) && event.target !== modale))) {
+        if (modale && (event.target === overlay || 
+            (!modale.contains(event.target) && event.target !== modale))) {
             modaleContainerAjout.remove();
             overlay.remove();
         }
-    }
-    overlay.addEventListener("click", fermerModaleAjout)
+    };
+    overlay.addEventListener("click", fermerModaleAjout);
     // Fermer la modale
     btnCloseModale.addEventListener("click",function () {
         modaleContainerAjout.remove();
         overlay.remove();
-    })
+    });
     // Revenir à la modale principale
-    btnRetourModale.addEventListener("click" , function(){
+    btnRetourModale.addEventListener("click", function(event){
         modaleContainerAjout.remove();
         overlay.remove();
-        modale();
+        modale(event);
     })
     // Remplacement de la div ajout d'image par l'image uploader
+    function intialisationAjoutImg() {
+        ajoutModaleInputAjoutImg.addEventListener("change", function () {
+            let file = ajoutModaleInputAjoutImg.files[0];
+            const divImgAjoutee = document.querySelector(".divAjoutFichier");
+            const imgAjoutee = document.createElement("img");
+            imgAjoutee.id = "imgAjoutee";
+            imgAjoutee.src = URL.createObjectURL(file);
+            divImgAjoutee.appendChild(imgAjoutee);
+            divAjoutFichierImg.remove();
+            ajoutModaleLabelAjoutImg.remove();
+            ajoutModaleInputAjoutImg.remove();
+            pAjoutFichier.remove();
+            // Verification du type
+            const regexFormatFichier = /\.(jpg|jpeg|png)$/i;
+            const nomFichier = ajoutModaleInputAjoutImg.value;
+            if (!regexFormatFichier.test(nomFichier)) {
+            alertInfoFichier();
+            overlay.remove();
+            console.log("mauvais format");
+            }
+            // Verification de la taille max
+            const fichier = ajoutModaleInputAjoutImg.files[0];
+            if (fichier && fichier.size > maxFileSize) {
+                alertInfoFichierSize();
+                overlay.remove();
+                console.log("Document trop volumineux");
+            }
+        });
+    };
+    document.addEventListener("DOMContentLoaded", intialisationAjoutImg);
     ajoutModaleInputAjoutImg.addEventListener("change", function () {
         const file = ajoutModaleInputAjoutImg.files[0];
         const divImgAjoutee = document.querySelector(".divAjoutFichier");
@@ -409,26 +423,26 @@ function modaleAjoutWorks() {
     });
     // Alerte en cas de mauvais format
     function alertInfoFichier() {
-            const bodyAlert = document.querySelector("body");        
-            const overlay = document.createElement("div");
-            overlay.className ="overlay";        
-            const alertContainer = document.createElement("div");
-            alertContainer.className = "alertFormatFichier";        
-            const alertP = document.createElement("p");
-            alertP.innerText = "Le format sélectionné n'est pas le bon !";
-            const btnAlertFormat = document.createElement("button");
-            btnAlertFormat.textContent = "Veuillez choisir le bon format.";        
-            alertContainer.appendChild(alertP);
-            alertContainer.appendChild(btnAlertFormat);
-            overlay.appendChild(alertContainer);
-            bodyAlert.appendChild(overlay);
-            // Bouton pour revenir a la modale d'ajout
-            btnAlertFormat.addEventListener("click", function () {
-                overlay.remove()
-                alertContainer.remove();
-                modaleAjoutWorks()
-            });
-    }
+        const bodyAlert = document.querySelector("body");        
+        const overlay = document.createElement("div");
+        overlay.className ="overlay";        
+        const alertContainer = document.createElement("div");
+        alertContainer.className = "alertFormatFichier";        
+        const alertP = document.createElement("p");
+        alertP.innerText = "Le format sélectionné n'est pas le bon !";
+        const btnAlertFormat = document.createElement("button");
+        btnAlertFormat.textContent = "Veuillez choisir le bon format.";        
+        alertContainer.appendChild(alertP);
+        alertContainer.appendChild(btnAlertFormat);
+        overlay.appendChild(alertContainer);
+        bodyAlert.appendChild(overlay);
+        // Bouton pour revenir a la modale d'ajout
+        btnAlertFormat.addEventListener("click", function (event) {
+            overlay.remove();
+            alertContainer.remove();
+             modaleAjoutWorks(event);
+        });
+    };
     // Alerte en cas de mauvaise taille max
     function alertInfoFichierSize() {
         const bodyAlert = document.querySelector("body");    
@@ -446,15 +460,65 @@ function modaleAjoutWorks() {
         bodyAlert.appendChild(overlay);
         // Bouton pour revenir a la modale d'ajout
         btnAlertFormat.addEventListener("click", function () {
-            overlay.remove()
+            overlay.remove();
             alertContainer.remove();
-            modaleAjoutWorks()
+            modaleAjoutWorks();
         });
-}
+    };
+    // Alerte champs vide
+    function alertInfoFichierChampsVide() {
+        const bodyAlert = document.querySelector("body");
     
-}
-
-
+        const overlay = document.createElement("div");
+        overlay.className ="overlay";
+    
+        const alertContainer = document.createElement("div");
+        alertContainer.className = "alertFormatFichier";
+    
+        const alertP = document.createElement("p");
+        alertP.innerText = "Champs vide !";
+    
+        const btnNouvelEssai = document.createElement("button")
+        btnNouvelEssai.textContent = "Nouvel Essai"
+    
+        btnNouvelEssai.addEventListener("click", function () {
+            overlay.remove()
+        })
+    
+        alertContainer.appendChild(alertP);
+        alertContainer.appendChild(btnNouvelEssai);
+        overlay.appendChild(alertContainer);
+        bodyAlert.appendChild(overlay);
+    }
+    // Envoi du nouveau fichier vers l'API
+    ajoutModaleForm.addEventListener("submit", async function (SubmitEvent) {
+        SubmitEvent.preventDefault();
+        const formData = new FormData();
+        const imgFichier = ajoutModaleInputAjoutImg.files[0];
+        const titreFichier = ajoutModaleInputTitre.value;
+        const categorieFichier = ajoutModaleSelectCatégorie.value;
+        formData.append("image", imgFichier);
+        formData.append("title", titreFichier);
+        formData.append("category", categorieFichier);
+        // Gestion des champs vides avec désactivation du bouton
+        if (imgFichier === undefined || titreFichier === "" || categorieFichier === "") {
+            ajoutModaleBtnValider.disabled = true;
+            alertInfoFichierChampsVide();
+            console.log("Champs vides");
+            return;
+        }
+        const swaggerWorksAjout = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: { "Authorization": "Bearer " + token },
+            body: formData,
+        });
+        if (swaggerWorksAjout.ok) {
+            console.log("Fichier ajouté avec succès");
+        } else {
+            console.log("Échec de l'ajout du fichier");
+        }
+    });
+}  
 
 // Gestion du mode editon apres connexion
 if (token) {
@@ -462,8 +526,8 @@ if (token) {
     editModePorfolio();
     // Ouverture Modale
     const btnOpenModale = document.querySelector("#portfolio h2");
-    btnOpenModale.addEventListener("click", function (){
-        modale();
+    btnOpenModale.addEventListener("click", function (event){
+        modale(event);
     });
 }else{
     // Pas de mode edition si token pas présent
