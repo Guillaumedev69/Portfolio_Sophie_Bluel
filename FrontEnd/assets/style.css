@@ -52,21 +52,21 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
-header {
+header{
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
 }
+
 .editHeader{
 	display: flex;
 	flex-direction: column;
 	margin-top: 0;
 }
 .elementNewHeader{
-	max-width: 1140px;
 	display: flex;
 	justify-content: space-between;
-	margin: 2.38rem 9.81rem 5.75rem 9.81rem ;
+	margin: 2.38rem 0 5.75rem 0 ;
 }
 .editModeHeader{
 	display: flex;
@@ -87,7 +87,8 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
+	margin-left: 9.81rem;
 }
 h1 > span {
 	font-family: 'Work Sans';
@@ -101,10 +102,11 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
-nav ul {
+header nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
+	margin-right: 9.81rem;
 
 }
 nav li {
@@ -293,9 +295,21 @@ input[type="submit"]{
 }
 footer{
 	background-color: white;
+	display: flex;
+	justify-content: end;
+}
+footer nav ul{
+	margin-right: 6.64rem;
+	height: 3.75rem;
+	flex-shrink: 0;	
+	color: #000;
+	font-family: "Work Sans";
+	font-size: 0.875rem;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
 }
 footer nav ul li{
-	justify-content: flex-end;
 	margin: 2em;
 	width: 100%;
 }
