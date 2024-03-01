@@ -2,7 +2,6 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -49,7 +48,6 @@ table {
 }
 /** end reset css**/
 body {
-	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
@@ -65,9 +63,10 @@ header {
 	margin-top: 0;
 }
 .elementNewHeader{
+	max-width: 1140px;
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 2.38rem 9.81rem 5.75rem 9.81rem ;
 }
 .editModeHeader{
 	display: flex;
@@ -75,7 +74,7 @@ header {
 	justify-content: center;
 	background-color: #000;
 	color: white;
-	flex-shrink: 0;
+	width: 100%;
 	height: 3.6875rem;
 	gap: 0.76rem;
 }
@@ -130,6 +129,12 @@ nav img{
 nav a:hover {
 	font-weight: bold;
 }
+
+main{
+	max-width: 1140px;
+	margin: 0 15.31rem;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -408,8 +413,6 @@ footer nav ul li{
 .iconTrash{
 	position: absolute;
 	z-index: 4;
-	top: 50%;
-	left: 50%;
 	transform: translate(-50%,-50%);
 	width: 0.5625rem;
 	height: 0.6875rem;
