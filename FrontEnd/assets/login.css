@@ -77,6 +77,7 @@ h1 > span {
 }
 main{
 	max-width: 1140px;
+	margin: auto;
 }
 h2{
 	font-family: 'Syne';
@@ -85,10 +86,6 @@ h2{
 	color: #1D6154
 }
 
-#login{
-	width: 50%;
-    margin: auto;
-}
 #login > *{
 	text-align: center;
 }
