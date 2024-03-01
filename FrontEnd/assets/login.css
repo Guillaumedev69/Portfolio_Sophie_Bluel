@@ -38,7 +38,7 @@ q:before, q:after {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 3.12rem 9.38rem 9.38rem 9.38rem;
 }
 nav ul {
 	display: flex;
@@ -143,6 +143,7 @@ input[type="submit"]{
 footer{
 	background-color: white;
     padding: 0;
+	margin-top: 22.19rem;
 }
 footer nav ul li{
 	justify-content: flex-end;
