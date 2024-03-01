@@ -2,24 +2,13 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
-*{
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font: inherit;
-	vertical-align: baseline;
-}
 body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 	background: #FFFEF8;
 	line-height: 1;
-    width: 90rem;
-    height: 64rem;
-    max-width: 1140px;
-	margin:auto;
+	height: 64rem;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
@@ -86,7 +75,9 @@ h1 > span {
 	letter-spacing: 0.1em;
 ;
 }
-
+main{
+	max-width: 1140px;
+}
 h2{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -141,13 +132,24 @@ input[type="submit"]{
 }
 
 footer{
+	display: flex;
+	justify-content: end;
 	background-color: white;
     padding: 0;
 	margin-top: 22.19rem;
 }
+footer nav ul{
+	height: 3.75rem;
+	flex-shrink: 0;	
+	color: #000;
+	font-family: "Work Sans";
+	font-size: 0.875rem;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+	margin-right: 6.64rem;
+}
 footer nav ul li{
-	justify-content: flex-end;
-	margin: 2em;
 	width: 100%;
 }
 
