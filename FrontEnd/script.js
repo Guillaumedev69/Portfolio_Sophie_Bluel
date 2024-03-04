@@ -208,25 +208,19 @@ function modaleGestionGalerie() {
             worksElement.appendChild(imageElement);
             sectionGalerieModale.appendChild(worksElement);  
             // Mise en service du btn Trash avec suppression dans l'API
-            btnTrash.addEventListener("click", function (event) {                         
+            btnTrash.addEventListener("click", async function () {                
+                // Supprimer l'élément de la galerie modale
+                worksElement.remove(); 
+                            
                 const Id = figureGalerie.id;
-                event.preventDefault()
-                worksElement.remove(event);
-                const deleteWorks = fetch(`http://localhost:5678/api/works/${Id}`, {
+                const deleteWorks = await fetch(`http://localhost:5678/api/works/${Id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
-                    },      
+                    },                
                 });
-                if (deleteWorks.ok) {
-                    // Supprimer l'élément de la galerie modale
-                    console.log("Works surpimés")
-                    
-                    
-                }
             });
-            
         }       
     }
     genererWorksModale(works);
@@ -496,6 +490,31 @@ function modaleAjouterWorks() {
         overlay.appendChild(alertContainer);
         bodyAlert.appendChild(overlay);
     }
+    //Alerte Error 404
+    function alertInfoErrorFichier() {
+        const bodyAlert = document.querySelector("body");
+    
+        const overlay = document.createElement("div");
+        overlay.className ="overlay";
+    
+        const alertContainer = document.createElement("div");
+        alertContainer.className = "alertFormatFichier";
+    
+        const alertP = document.createElement("p");
+        alertP.innerText = "Error !";
+    
+        const btnNouvelEssai = document.createElement("button")
+        btnNouvelEssai.textContent = "Nouvel Essai"
+    
+        btnNouvelEssai.addEventListener("click", function () {
+            overlay.remove()
+        })
+    
+        alertContainer.appendChild(alertP);
+        alertContainer.appendChild(btnNouvelEssai);
+        overlay.appendChild(alertContainer);
+        bodyAlert.appendChild(overlay);
+    }
     // Envoi du nouveau fichier vers l'API
     formAjouterWorks.addEventListener("submit", async function (SubmitEvent) {
         SubmitEvent.preventDefault();
@@ -521,6 +540,7 @@ function modaleAjouterWorks() {
         if (swaggerWorksAjout.ok) {
             console.log("Fichier ajouté avec succès");
         } else {
+            alertInfoErrorFichier()
             console.log("Échec de l'ajout du fichier");
         }
     });
