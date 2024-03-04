@@ -208,19 +208,25 @@ function modaleGestionGalerie() {
             worksElement.appendChild(imageElement);
             sectionGalerieModale.appendChild(worksElement);  
             // Mise en service du btn Trash avec suppression dans l'API
-            btnTrash.addEventListener("click", async function () {                
-                // Supprimer l'élément de la galerie modale
-                worksElement.remove(); 
-                            
+            btnTrash.addEventListener("click", function (event) {                         
                 const Id = figureGalerie.id;
-                const deleteWorks = await fetch(`http://localhost:5678/api/works/${Id}`, {
+                event.preventDefault()
+                worksElement.remove(event);
+                const deleteWorks = fetch(`http://localhost:5678/api/works/${Id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
-                    },                
+                    },      
                 });
+                if (deleteWorks.ok) {
+                    // Supprimer l'élément de la galerie modale
+                    console.log("Works surpimés")
+                    
+                    
+                }
             });
+            
         }       
     }
     genererWorksModale(works);
