@@ -552,7 +552,8 @@ footer nav ul li{
 	width: auto;
 	margin: 0;
 }
-.alertFormatFichier{
+.alertFormatFichier,
+.alertValidationFichier{
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -567,7 +568,8 @@ footer nav ul li{
 	justify-content: center;
 }
 
-.alertFormatFichier button{
+.alertFormatFichier button,
+.alertValidationFichier button{
 	all: unset;
 	border-radius: 3.75rem;
 	background: #A7A7A7;
@@ -587,6 +589,18 @@ footer nav ul li{
 	align-items: center;
 	height: 50%;
 	color: red;
+	text-align: center;
+	font-family: "Work Sans";
+	font-size: 1.4rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+.alertValidationFichier p{
+	display: flex;
+	align-items: center;
+	height: 50%;
+	color: green;
 	text-align: center;
 	font-family: "Work Sans";
 	font-size: 1.4rem;
