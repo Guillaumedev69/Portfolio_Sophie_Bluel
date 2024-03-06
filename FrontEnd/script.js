@@ -2,7 +2,7 @@ const swaggerWorks = await fetch("http://localhost:5678/api/works");
 const works = await swaggerWorks.json();
 function genererWorks(works) {
     const sectionGallery = document.querySelector("#portfolio");
-    let divGallery = sectionGallery.querySelector(".gallery");
+    let divGallery = document.querySelector(".gallery");
     // Création de la galerie si il n'y en a pas
     if (!divGallery) {
         divGallery = document.createElement("div");
@@ -12,13 +12,15 @@ function genererWorks(works) {
         divGallery.innerHTML = "";
     }
     for (let i = 0; i < works.length; i++) {
-        const figureGallery = works[i];
+        const figureGalerie = works[i];
         const worksElement = document.createElement("figure");
+        worksElement.id = figureGalerie.id
         const imageElement = document.createElement("img");
-            imageElement.src = figureGallery.imageUrl;
+            imageElement.src = figureGalerie.imageUrl;
         const nomElement = document.createElement("figcaption");
-            nomElement.innerText = figureGallery.title;
-        worksElement.dataset.categoryId = figureGallery.categoryId; // Recuperation des categories des works
+            nomElement.innerText = figureGalerie.title;
+        worksElement.dataset.categoryId = figureGalerie.categoryId; // Recuperation des categories des works
+        worksElement.dataset.Id = figureGalerie.id;
         worksElement.appendChild(imageElement);
         worksElement.appendChild(nomElement);
         divGallery.appendChild(worksElement);
@@ -172,7 +174,6 @@ function modaleGestionGalerie() {
         
         // Vérifier si modale est null avant d'utiliser la methode
         // methode pour eviter un defaut dans la console
-        //"Uncaught TypeError: Cannot read properties of null (reading 'contains')".
         if (modale && (event.target === overlay || (!modale.contains(event.target) && event.target !== modale))) {
             modaleGalerieContainer.remove();
             overlay.remove();
@@ -189,8 +190,8 @@ function modaleGestionGalerie() {
         const sectionGalerieModale = document.querySelector(".modaleGalerie");
         for (let i = 0; i < works.length; i++) {
             const figureGalerie = works[i];
-            const worksElement = document.createElement("figure");
-            worksElement.id = figureGalerie.id;
+            const worksElementModale = document.createElement("figure");
+            worksElementModale.id = figureGalerie.id;
             const imageElement = document.createElement("img");
                 imageElement.src = figureGalerie.imageUrl;
                 imageElement.className = "imgGalerie";
@@ -204,25 +205,39 @@ function modaleGestionGalerie() {
             btnTrash.className = "btnTrash";
             btnTrash.appendChild(backgrdnIconTrash);
             btnTrash.appendChild(iconSupp);
-            worksElement.appendChild(btnTrash);
-            worksElement.appendChild(imageElement);
-            sectionGalerieModale.appendChild(worksElement);  
+            worksElementModale.appendChild(btnTrash);
+            worksElementModale.appendChild(imageElement);
+            sectionGalerieModale.appendChild(worksElementModale);
             // Mise en service du btn Trash avec suppression dans l'API
+            function supprimerElementGalerie(figureGalerie) {
+                const elementASupprimer = document.getElementById(figureGalerie);
+                if (elementASupprimer) {
+                    elementASupprimer.remove();
+                }
+                const galerieAccueil = document.querySelector(`.gallery figure[data-id="${figureGalerie}"]`);
+                if (galerieAccueil) {
+                    galerieAccueil.remove();
+                    elementASupprimer.remove()
+                }
+            }
             btnTrash.addEventListener("click", async function () {                
-                // Supprimer l'élément de la galerie modale
-                worksElement.remove(); 
-                            
                 const Id = figureGalerie.id;
                 const deleteWorks = await fetch(`http://localhost:5678/api/works/${Id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
-                    },                
+                    },                  
                 });
+                if (deleteWorks.ok) {
+                    console.log("Delete ok !");
+                    console.log(Id)
+                    supprimerElementGalerie(Id);
+                }
             });
-        }       
-    }
+
+        };
+    };
     genererWorksModale(works);
     //ouverture mode ajout de fichier
     btnAjouterWorks.addEventListener("click", function () {
@@ -311,6 +326,7 @@ function modaleAjouterWorks() {
     const btnValiderFormAjouterFichier = document.createElement("button");
     btnValiderFormAjouterFichier.setAttribute("type","submit");
     btnValiderFormAjouterFichier.textContent = "Valider";
+    btnValiderFormAjouterFichier.className = "btnValiderFormActive";
     // appel des elements
     btnRetourModale.appendChild(iconRetourModale);
     headerAjouterWorks.appendChild(btnRetourModale);
@@ -527,7 +543,6 @@ function modaleAjouterWorks() {
         formData.append("category", categorieFichier);
         // Gestion des champs vides avec désactivation du bouton
         if (imgFichier === undefined || titreFichier === "" || categorieFichier === "") {
-            btnValiderFormAjouterFichier.disabled = true;
             alertInfoChampVideFichier();
             console.log("Champs vides");
             return;
