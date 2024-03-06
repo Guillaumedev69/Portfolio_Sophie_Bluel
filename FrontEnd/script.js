@@ -235,15 +235,12 @@ function modaleGestionGalerie() {
                     supprimerElementGalerie(Id);
                 }
             });
-
         };
     };
     genererWorksModale(works);
     //ouverture mode ajout de fichier
     btnAjouterWorks.addEventListener("click", function () {
-        modaleGalerieContainer.remove();
-        overlay.remove();
-        modaleAjouterWorks();    
+        modaleAjouterWorks();
     });
 };
 function modaleAjouterWorks() {
@@ -364,8 +361,7 @@ function modaleAjouterWorks() {
         } else {
             btnValiderVerifierChamps.disabled = true;
         }
-        
-    }
+    };
     inputAjouterFichier.addEventListener("input", btnValiderVerifierChamps);
     inputTitreInfoFichier.addEventListener("input", btnValiderVerifierChamps);
     // Fermer la modale
@@ -520,6 +516,31 @@ function modaleAjouterWorks() {
         overlay.appendChild(alertContainer);
         bodyAlert.appendChild(overlay);
     }
+    // Alerte Validation Fichier
+    function alertInfoValidationFichier() {
+        const bodyAlert = document.querySelector("body");
+    
+        const overlay = document.createElement("div");
+        overlay.className ="overlay";
+    
+        const alertContainer = document.createElement("div");
+        alertContainer.className = "alertValidationFichier";
+    
+        const alertP = document.createElement("p");
+        alertP.innerText = "Fichier ajouté !";
+    
+        const btnNouvelEssai = document.createElement("button")
+        btnNouvelEssai.textContent = "Ajouter un nouveau fichier"
+    
+        btnNouvelEssai.addEventListener("click", function () {
+            overlay.remove()
+        })
+    
+        alertContainer.appendChild(alertP);
+        alertContainer.appendChild(btnNouvelEssai);
+        overlay.appendChild(alertContainer);
+        bodyAlert.appendChild(overlay);
+    };
     //Alerte Error 404
     function alertInfoErrorFichier() {
         const bodyAlert = document.querySelector("body");
@@ -568,12 +589,82 @@ function modaleAjouterWorks() {
         });
         if (swaggerWorksAjout.ok) {
             console.log("Fichier ajouté avec succès");
+            // Reponse de l'API
+            const newWorks = await swaggerWorksAjout.json();
+            ajoutNouveauFichierGalerie(newWorks);
+            ajoutNouveauFichierGalerieModale(newWorks);
+            containerAjouterWorks.remove();
+            overlay.remove();
+            
         } else {
-            alertInfoErrorFichier()
+            alertInfoErrorFichier();
             console.log("Échec de l'ajout du fichier");
-        }
+        };
     });
-}  
+    // Ajout de l'élément dans la galerie
+    function ajoutNouveauFichierGalerie(newWorks) {
+        const worksElement = document.createElement("figure");
+        worksElement.id = newWorks.id;
+        const imageElement = document.createElement("img");
+        imageElement.src = newWorks.imageUrl;
+        const nomElement = document.createElement("figcaption");
+            nomElement.innerText = newWorks.title;
+        const sectionGalerie = document.querySelector(".gallery");
+        worksElement.appendChild(imageElement);
+        worksElement.appendChild(nomElement);
+        sectionGalerie.appendChild(worksElement);
+        console.log("Ajout fichier a la galerie")
+    };
+    // Ajout de l'élément dans la galerie de la modale avec btn trash actif
+    function ajoutNouveauFichierGalerieModale(newWorks) {
+        const worksElementModale = document.createElement("figure");
+        worksElementModale.id = newWorks.id;
+        const imageElementModale = document.createElement("img");
+        imageElementModale.className = "imgGalerie"
+        imageElementModale.src = newWorks.imageUrl;
+        const iconSupp = document.createElement("img");
+            iconSupp.src = "assets/icons/iconTrash.png";
+            iconSupp.className = "iconTrash";
+            const backgrdnIconTrash = document.createElement("img");
+            backgrdnIconTrash.src = "assets/icons/iconBackgrnd.png";
+            backgrdnIconTrash.className = "iconBackgrndTrash";
+            const btnTrash = document.createElement("button");
+            btnTrash.className = "btnTrash";
+            btnTrash.appendChild(backgrdnIconTrash);
+            btnTrash.appendChild(iconSupp);
+            worksElementModale.appendChild(btnTrash);
+        const modaleGalerie = document.querySelector(".modaleGalerie");
+        worksElementModale.appendChild(imageElementModale);
+        modaleGalerie.appendChild(worksElementModale);
+        console.log("Ajout fichier à la modale")
+        function supprimerNewElement(worksElementModale) {
+            const elementASupprimer = document.getElementById(worksElementModale);
+            if (elementASupprimer) {
+                elementASupprimer.remove();
+            }
+            const galerieAccueil = document.querySelector(`.gallery figure[data-id="${worksElementModale}"]`);
+            if (galerieAccueil) {
+                galerieAccueil.remove();
+                elementASupprimer.remove()
+            }
+        }
+        btnTrash.addEventListener("click", async function () {                
+            const Id = worksElementModale.id;
+            const deleteWorks = await fetch(`http://localhost:5678/api/works/${Id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },                  
+            });
+            if (deleteWorks.ok) {
+                console.log("Delete ok !");
+                console.log(Id);
+                supprimerNewElement(Id);
+            }
+        });
+    };
+};
 
 // Gestion du mode editon apres connexion
 if (token) {
