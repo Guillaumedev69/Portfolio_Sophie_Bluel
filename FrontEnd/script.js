@@ -326,7 +326,8 @@ function modaleAjouterWorks() {
     const btnValiderFormAjouterFichier = document.createElement("button");
     btnValiderFormAjouterFichier.setAttribute("type","submit");
     btnValiderFormAjouterFichier.textContent = "Valider";
-    btnValiderFormAjouterFichier.className = "btnValiderFormActive";
+    btnValiderFormAjouterFichier.className = "btnValiderForm"
+    btnValiderFormAjouterFichier.disabled = true;
     // appel des elements
     btnRetourModale.appendChild(iconRetourModale);
     headerAjouterWorks.appendChild(btnRetourModale);
@@ -353,7 +354,21 @@ function modaleAjouterWorks() {
     // Localisatione et arriere plan
     overlay.appendChild(containerAjouterWorks);
     bodyModaleAjouterWorks.appendChild(overlay);
-
+    // Gestion btn Valider
+    function btnValiderVerifierChamps() {
+        const imgFichier = inputAjouterFichier.files[0];
+        const titreFichier = inputTitreInfoFichier.value;
+        if (imgFichier && titreFichier) {
+            btnValiderFormAjouterFichier.disabled = false;
+            btnValiderFormAjouterFichier.className = "btnValiderFormActive"
+        } else {
+            btnValiderVerifierChamps.disabled = true;
+        }
+        
+    }
+    inputAjouterFichier.addEventListener("input", btnValiderVerifierChamps);
+    inputTitreInfoFichier.addEventListener("input", btnValiderVerifierChamps);
+    // Fermer la modale
     function fermerModaleAjout(event) {
         const modale = document.querySelector(".modaleAjoutContain");
         const overlay = document.querySelector(".overlay");
@@ -368,7 +383,6 @@ function modaleAjouterWorks() {
         }
     };
     overlay.addEventListener("click", fermerModaleAjout);
-    // Fermer la modale
     btnCloseModale.addEventListener("click",function () {
         containerAjouterWorks.remove();
         overlay.remove();
