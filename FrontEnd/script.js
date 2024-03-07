@@ -24,7 +24,6 @@ function genererWorks(works) {
         worksElement.appendChild(imageElement);
         worksElement.appendChild(nomElement);
         divGallery.appendChild(worksElement);
-        console.log(worksElement)
     };
     sectionGallery.appendChild(divGallery);
     
@@ -128,7 +127,69 @@ function portfolioModeEdition() {
 
     // Suppression des filtres
         const suppFiltres = document.getElementsByClassName(".btn-filtres");
-        suppFiltres.className = "suppFiltres";
+        if (suppFiltres) {
+            suppFiltres.innerHTML = "";
+        }
+        
+};
+function genererWorksModale(works) {
+    const sectionGalerieModale = document.querySelector(".modaleGalerie");
+    if (!sectionGalerieModale) {
+        sectionGalerieModale = document.createElement("div");
+        sectionGalerieModale.className = "gallery";
+    } else {
+        // Suppression de la galerie si existante
+        sectionGalerieModale.innerHTML = "";
+    }
+    for (let i = 0; i < works.length; i++) {
+        const figureGalerie = works[i];
+        const worksElementModale = document.createElement("figure");
+        worksElementModale.id = figureGalerie.id;
+        const imageElement = document.createElement("img");
+            imageElement.src = figureGalerie.imageUrl;
+            imageElement.className = "imgGalerie";
+        const iconSupp = document.createElement("img");
+        iconSupp.src = "assets/icons/iconTrash.png";
+        iconSupp.className = "iconTrash";
+        const backgrdnIconTrash = document.createElement("img");
+        backgrdnIconTrash.src = "assets/icons/iconBackgrnd.png";
+        backgrdnIconTrash.className = "iconBackgrndTrash";
+        const btnTrash = document.createElement("button");
+        btnTrash.className = "btnTrash";
+        btnTrash.appendChild(backgrdnIconTrash);
+        btnTrash.appendChild(iconSupp);
+        worksElementModale.appendChild(btnTrash);
+        worksElementModale.appendChild(imageElement);
+        sectionGalerieModale.appendChild(worksElementModale);
+        // Mise en service du btn Trash avec suppression dans l'API
+        function supprimerElementGalerie(figureGalerie) {
+            const elementASupprimer = document.getElementById(figureGalerie);
+            if (elementASupprimer) {
+                elementASupprimer.remove();
+            }
+            const galerieAccueil = document.querySelectorAll(`.gallery figure[data--id="${figureGalerie}"]`);
+            galerieAccueil.forEach((element) =>{
+                element.remove()
+                console.log(galerieAccueil)
+            })
+        }
+        btnTrash.addEventListener("click", async function () {                
+            const Id = figureGalerie.id;
+            const deleteWorks = await fetch(`http://localhost:5678/api/works/${Id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },                  
+            });
+            if (deleteWorks.ok) {
+                console.log("Delete ok !");
+                console.log(Id)
+                supprimerElementGalerie(Id);
+                console.log(sectionGalerieModale)
+            }
+        });
+    };
 };
 function modaleGestionGalerie() {
     // Placement sur le body
@@ -169,6 +230,8 @@ function modaleGestionGalerie() {
     modaleGalerieContainer.appendChild(btnAjouterWorks);
     overlay.appendChild(modaleGalerieContainer);
     bodyModaleGalerie.appendChild(overlay);
+    // affichage de la galerie de la modale
+    genererWorksModale(works);
     // Fermer modale si click à l'exterieur de celle-ci 
     function fermerModale(event) {
         const modale = document.querySelector(".modale1Contain");
@@ -187,61 +250,10 @@ function modaleGestionGalerie() {
         modaleGalerieContainer.remove();
         overlay.remove();
     })
-    // affichage de la galerie de la modale
-    function genererWorksModale(works) {
-        const sectionGalerieModale = document.querySelector(".modaleGalerie");
-        for (let i = 0; i < works.length; i++) {
-            const figureGalerie = works[i];
-            const worksElementModale = document.createElement("figure");
-            worksElementModale.id = figureGalerie.id;
-            const imageElement = document.createElement("img");
-                imageElement.src = figureGalerie.imageUrl;
-                imageElement.className = "imgGalerie";
-            const iconSupp = document.createElement("img");
-            iconSupp.src = "assets/icons/iconTrash.png";
-            iconSupp.className = "iconTrash";
-            const backgrdnIconTrash = document.createElement("img");
-            backgrdnIconTrash.src = "assets/icons/iconBackgrnd.png";
-            backgrdnIconTrash.className = "iconBackgrndTrash";
-            const btnTrash = document.createElement("button");
-            btnTrash.className = "btnTrash";
-            btnTrash.appendChild(backgrdnIconTrash);
-            btnTrash.appendChild(iconSupp);
-            worksElementModale.appendChild(btnTrash);
-            worksElementModale.appendChild(imageElement);
-            sectionGalerieModale.appendChild(worksElementModale);
-            // Mise en service du btn Trash avec suppression dans l'API
-            function supprimerElementGalerie(figureGalerie) {
-                const elementASupprimer = document.getElementById(figureGalerie);
-                if (elementASupprimer) {
-                    elementASupprimer.remove();
-                }
-                const galerieAccueil = document.querySelectorAll(`.gallery figure[data--id="${figureGalerie}"]`);
-                galerieAccueil.forEach((element) =>{
-                    element.remove()
-                    console.log(galerieAccueil)
-                })
-            }
-            btnTrash.addEventListener("click", async function () {                
-                const Id = figureGalerie.id;
-                const deleteWorks = await fetch(`http://localhost:5678/api/works/${Id}`, {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },                  
-                });
-                if (deleteWorks.ok) {
-                    console.log("Delete ok !");
-                    console.log(Id)
-                    supprimerElementGalerie(Id);
-                }
-            });
-        };
-    };
-    genererWorksModale(works);
     //ouverture mode ajout de fichier
     btnAjouterWorks.addEventListener("click", function () {
+        modaleGalerieContainer.remove()
+        overlay.remove()
         modaleAjouterWorks();
     });
 };
@@ -386,10 +398,10 @@ function modaleAjouterWorks() {
         overlay.remove();
     });
     // Revenir à la modale principale
-    btnRetourModale.addEventListener("click", function(event){
-        containerAjouterWorks.remove();
-        overlay.remove();
-        modaleGestionGalerie(event);
+    btnRetourModale.addEventListener("click", function(){
+        overlay.remove()
+        containerAjouterWorks.remove()
+        modaleGestionGalerie(works);
     })
     // Remplacement de la div ajout d'image par l'image uploader
     function intialisationAjoutImg() {
@@ -531,15 +543,16 @@ function modaleAjouterWorks() {
         const alertP = document.createElement("p");
         alertP.innerText = "Fichier ajouté !";
     
-        const btnNouvelEssai = document.createElement("button")
-        btnNouvelEssai.textContent = "Ajouter un nouveau fichier"
-    
-        btnNouvelEssai.addEventListener("click", function () {
+        const btnAJouterUnAutre = document.createElement("button")
+        btnAJouterUnAutre.textContent = "Ajouter un nouveau fichier"
+
+        btnAJouterUnAutre.addEventListener("click", function () {
             overlay.remove()
+            modaleAjouterWorks()
         })
     
         alertContainer.appendChild(alertP);
-        alertContainer.appendChild(btnNouvelEssai);
+        alertContainer.appendChild(btnAJouterUnAutre);
         overlay.appendChild(alertContainer);
         bodyAlert.appendChild(overlay);
     };
@@ -562,7 +575,7 @@ function modaleAjouterWorks() {
         btnNouvelEssai.addEventListener("click", function () {
             overlay.remove()
         })
-    
+        
         alertContainer.appendChild(alertP);
         alertContainer.appendChild(btnNouvelEssai);
         overlay.appendChild(alertContainer);
@@ -590,6 +603,7 @@ function modaleAjouterWorks() {
             body: formData,
         });
         if (swaggerWorksAjout.ok) {
+            alertInfoValidationFichier()
             console.log("Fichier ajouté avec succès");
             // Reponse de l'API
             const works = await swaggerWorksAjout.json();
@@ -618,10 +632,10 @@ function modaleAjouterWorks() {
         worksElement.appendChild(nomElement);
         sectionGalerie.appendChild(worksElement);
         console.log("Ajout fichier a la galerie")
-        console.log(worksElement)
     };
     // Ajout de l'élément dans la galerie de la modale avec btn trash actif
     function ajoutNouveauFichierGalerieModale(works) {
+        const modaleGalerie = document.querySelector(".overlay");
         const worksElementModale = document.createElement("figure");
         worksElementModale.id = works.id;
         const imageElementModale = document.createElement("img");
@@ -638,7 +652,6 @@ function modaleAjouterWorks() {
             btnTrash.appendChild(backgrdnIconTrash);
             btnTrash.appendChild(iconSupp);
             worksElementModale.appendChild(btnTrash);
-        const modaleGalerie = document.querySelector(".modaleGalerie");
         worksElementModale.appendChild(imageElementModale);
         modaleGalerie.appendChild(worksElementModale);
         console.log("Ajout fichier à la modale")
