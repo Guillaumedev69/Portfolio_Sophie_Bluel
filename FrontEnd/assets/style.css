@@ -399,7 +399,7 @@ footer nav ul li{
 	display: grid;
 	grid-template-columns: repeat(5,1fr);
 	gap: 0.47rem;
-	padding: 2.88rem 5rem 4.21rem 6.58rem;
+	padding: 3rem 5rem 3rem 5rem;
 	overflow-y: auto;
 	max-width: 100%;
 	max-height: 300px;
