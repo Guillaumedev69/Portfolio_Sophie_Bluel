@@ -134,13 +134,6 @@ function portfolioModeEdition() {
 };
 function genererWorksModale(works) {
     const sectionGalerieModale = document.querySelector(".modaleGalerie");
-    if (!sectionGalerieModale) {
-        sectionGalerieModale = document.createElement("div");
-        sectionGalerieModale.className = "gallery";
-    } else {
-        // Suppression de la galerie si existante
-        sectionGalerieModale.innerHTML = "";
-    }
     for (let i = 0; i < works.length; i++) {
         const figureGalerie = works[i];
         const worksElementModale = document.createElement("figure");
@@ -161,6 +154,7 @@ function genererWorksModale(works) {
         worksElementModale.appendChild(btnTrash);
         worksElementModale.appendChild(imageElement);
         sectionGalerieModale.appendChild(worksElementModale);
+        console.log(worksElementModale.id)
         // Mise en service du btn Trash avec suppression dans l'API
         function supprimerElementGalerie(figureGalerie) {
             const elementASupprimer = document.getElementById(figureGalerie);
@@ -191,6 +185,7 @@ function genererWorksModale(works) {
         });
     };
 };
+
 function modaleGestionGalerie() {
     // Placement sur le body
     const bodyModaleGalerie = document.querySelector("body"); 
@@ -230,8 +225,7 @@ function modaleGestionGalerie() {
     modaleGalerieContainer.appendChild(btnAjouterWorks);
     overlay.appendChild(modaleGalerieContainer);
     bodyModaleGalerie.appendChild(overlay);
-    // affichage de la galerie de la modale
-    genererWorksModale(works);
+    
     // Fermer modale si click à l'exterieur de celle-ci 
     function fermerModale(event) {
         const modale = document.querySelector(".modale1Contain");
@@ -252,10 +246,19 @@ function modaleGestionGalerie() {
     })
     //ouverture mode ajout de fichier
     btnAjouterWorks.addEventListener("click", function () {
-        modaleGalerieContainer.remove()
-        overlay.remove()
+        modaleGalerieContainer.remove();
+        overlay.remove();
         modaleAjouterWorks();
     });
+    // Récupérer les données de l'API
+    fetch("http://localhost:5678/api/works")
+        .then(response => response.json())
+        .then(worksModale => {
+            genererWorksModale(worksModale);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des données de l\'API : ', error);
+        });
 };
 function modaleAjouterWorks() {
     const bodyModaleAjouterWorks = document.querySelector("body"); 
@@ -690,8 +693,8 @@ if (token) {
     portfolioModeEdition();
     // Ouverture Modale
     const btnOpenModale = document.querySelector("#portfolio h2");
-    btnOpenModale.addEventListener("click", function (event){
-        modaleGestionGalerie(event);
+    btnOpenModale.addEventListener("click", function (){
+        modaleGestionGalerie(works);
     });
 }else{
     // Pas de mode edition si token pas présent
