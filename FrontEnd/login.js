@@ -80,7 +80,7 @@ formLogin.appendChild(inputMdpFormLogin);
 formLogin.appendChild(inputConnexionFormLogin);
 formLogin.appendChild(aMdpOublieFormLogin);
 //// fonction pour gestion du form de login
-function alertInfoValideFormLogin() {
+function alertInfoValidFormLogin() {
     const bodyAlert = document.querySelector("body");
     const overlay = document.createElement("div");
     overlay.className ="overlay";
@@ -93,7 +93,7 @@ function alertInfoValideFormLogin() {
     overlay.appendChild(alertContainer);
     bodyAlert.appendChild(overlay);
 }
-function alertInfoChampsVideFormLogin() {
+function alertInfoFieldsEmptyFormLogin() {
     const bodyAlert = document.querySelector("body");
     const overlay = document.createElement("div");
     overlay.className ="overlay";
@@ -160,7 +160,7 @@ formLogin.addEventListener("submit", async function (SubmitEvent) {
     const password = inputMdpFormLogin.value.trim();
     try { 
         if (email === "" || password === "") {
-            alertInfoChampsVideFormLogin();
+            alertInfoFieldsEmptyFormLogin();
             console.log("Champs vide");
             return;
         }
@@ -174,7 +174,7 @@ formLogin.addEventListener("submit", async function (SubmitEvent) {
             localStorage.setItem("token", swaggerToken.token); // Mise en mémoire du token
             inputEmailFormLogin.value = "";
             inputMdpFormLogin.value = "";
-            alertInfoValideFormLogin();
+            alertInfoValidFormLogin();
             console.log("Connexion réussie !");
             setTimeout(() => {
                 window.location.href="index.html"; // Redirection vers la page en 1s
