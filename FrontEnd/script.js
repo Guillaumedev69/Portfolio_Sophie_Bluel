@@ -1,6 +1,6 @@
 const swaggerWorks = await fetch("http://localhost:5678/api/works");
 const works = await swaggerWorks.json();
-function genererWorks(works) {
+function generateWorks(works) {
     const sectionGallery = document.querySelector("#portfolio");
     let divGallery = document.querySelector(".gallery");
     // Création de la galerie si il n'y en a pas
@@ -30,7 +30,7 @@ function genererWorks(works) {
 }
 const swaggerCategories = await fetch("http://localhost:5678/api/categories");
 const categories = await swaggerCategories.json();
-function genererButtonFiltre(categories) {
+function generateButtonFilters(categories) {
     const sectionFiltresGalerie = document.querySelector("#portfolio");
     const divFiltresGalerie = document.createElement("div");
     divFiltresGalerie.className = "btn-filtres";
@@ -53,7 +53,7 @@ function genererButtonFiltre(categories) {
     // Ajouter un gestionnaire d'événements pour le bouton "Tous"
     btnFiltreTous.addEventListener("click", function () {
         document.querySelector(".gallery").innerHTML = "";
-        genererWorks(works);
+        generateWorks(works);
     });
 
     // Créer et configurer les autres boutons basés sur les catégories
@@ -76,14 +76,14 @@ function genererButtonFiltre(categories) {
                 return work.categoryId === parseInt(btnFiltreCategorie.value);
             });
             document.querySelector(".gallery").innerHTML = "";
-            genererWorks(worksFiltres);
+            generateWorks(worksFiltres);
         });
     }
 }
 // fonction appelée apres categories pour avoir les filtres au-dessus
-genererWorks(works);
+generateWorks(works);
 const token = localStorage.getItem("token");
-function headerModeEdition() {
+function headerEditMode() {
     // editMode Header
         const editNewHeader = document.querySelector("header");
         editNewHeader.className = "editHeader"; // class pour le nouveau Header
@@ -112,7 +112,7 @@ function headerModeEdition() {
             localStorage.removeItem("token");
         })
 };
-function portfolioModeEdition() {
+function portfolioEditMode() {
     // editMode Porfolio
         const editPorfolio = document.querySelector("#portfolio h2"); // Récuperation du placement dans le h2
         const iconEditPortfolio = document.createElement("img"); // intégration de l'icon
@@ -132,7 +132,7 @@ function portfolioModeEdition() {
         }
         
 };
-function genererWorksModale(works) {
+function generateWorksForModal(works) {
     const sectionGalerieModale = document.querySelector(".modaleGalerie");
     for (let i = 0; i < works.length; i++) {
         const figureGalerie = works[i];
@@ -156,7 +156,7 @@ function genererWorksModale(works) {
         sectionGalerieModale.appendChild(worksElementModale);
         console.log(worksElementModale.id)
         // Mise en service du btn Trash avec suppression dans l'API
-        function supprimerElementGalerie(figureGalerie) {
+        function deleteElementGallery(figureGalerie) {
             const elementASupprimer = document.getElementById(figureGalerie);
             if (elementASupprimer) {
                 elementASupprimer.remove();
@@ -179,14 +179,14 @@ function genererWorksModale(works) {
             if (deleteWorks.ok) {
                 console.log("Delete ok !");
                 console.log(Id)
-                supprimerElementGalerie(Id);
+                deleteElementGallery(Id);
                 console.log(sectionGalerieModale)
             }
         });
     };
 };
 
-function modaleGestionGalerie() {
+function modalGallery() {
     // Placement sur le body
     const bodyModaleGalerie = document.querySelector("body"); 
     // Creation de l'arriere plan de la modale
@@ -227,7 +227,7 @@ function modaleGestionGalerie() {
     bodyModaleGalerie.appendChild(overlay);
     
     // Fermer modale si click à l'exterieur de celle-ci 
-    function fermerModale(event) {
+    function closeModalGallery(event) {
         const modale = document.querySelector(".modale1Contain");
         const overlay = document.querySelector(".overlay");
         
@@ -238,7 +238,7 @@ function modaleGestionGalerie() {
             overlay.remove();
         }
     }
-    overlay.addEventListener("click", fermerModale)
+    overlay.addEventListener("click", closeModalGallery)
     // Fermer la modale grâce au btn
     btnCloseModale.addEventListener("click",function () {
         modaleGalerieContainer.remove();
@@ -248,19 +248,19 @@ function modaleGestionGalerie() {
     btnAjouterWorks.addEventListener("click", function () {
         modaleGalerieContainer.remove();
         overlay.remove();
-        modaleAjouterWorks();
+        modalAddWorks();
     });
     // Récupérer les données de l'API
     fetch("http://localhost:5678/api/works")
         .then(response => response.json())
         .then(worksModale => {
-            genererWorksModale(worksModale);
+            generateWorksForModal(worksModale);
         })
         .catch(error => {
             console.error('Erreur lors de la récupération des données de l\'API : ', error);
         });
 };
-function modaleAjouterWorks() {
+function modalAddWorks() {
     const bodyModaleAjouterWorks = document.querySelector("body"); 
     // Creation de l'arriere plan de la modale
     const overlay = document.createElement("div"); 
@@ -369,20 +369,20 @@ function modaleAjouterWorks() {
     overlay.appendChild(containerAjouterWorks);
     bodyModaleAjouterWorks.appendChild(overlay);
     // Gestion btn Valider
-    function btnValiderVerifierChamps() {
+    function btnValidateVerifyFields() {
         const imgFichier = inputAjouterFichier.files[0];
         const titreFichier = inputTitreInfoFichier.value;
         if (imgFichier && titreFichier) {
             btnValiderFormAjouterFichier.disabled = false;
             btnValiderFormAjouterFichier.className = "btnValiderFormActive"
         } else {
-            btnValiderVerifierChamps.disabled = true;
+            btnValidateVerifyFields.disabled = true;
         }
     };
-    inputAjouterFichier.addEventListener("input", btnValiderVerifierChamps);
-    inputTitreInfoFichier.addEventListener("input", btnValiderVerifierChamps);
+    inputAjouterFichier.addEventListener("input", btnValidateVerifyFields);
+    inputTitreInfoFichier.addEventListener("input", btnValidateVerifyFields);
     // Fermer la modale
-    function fermerModaleAjout(event) {
+    function closeModalAddFile(event) {
         const modale = document.querySelector(".modaleAjoutContain");
         const overlay = document.querySelector(".overlay");
         
@@ -395,7 +395,7 @@ function modaleAjouterWorks() {
             overlay.remove();
         }
     };
-    overlay.addEventListener("click", fermerModaleAjout);
+    overlay.addEventListener("click", closeModalAddFile);
     btnCloseModale.addEventListener("click",function () {
         containerAjouterWorks.remove();
         overlay.remove();
@@ -404,68 +404,45 @@ function modaleAjouterWorks() {
     btnRetourModale.addEventListener("click", function(){
         overlay.remove()
         containerAjouterWorks.remove()
-        modaleGestionGalerie(works);
+        modalGallery(works);
     })
     // Remplacement de la div ajout d'image par l'image uploader
-    function intialisationAjoutImg() {
-        inputAjouterFichier.addEventListener("change", function () {
-            let file = inputAjouterFichier.files[0];
-            const divImgAjoutee = document.querySelector(".divAjoutFichier");
-            const imgAjoutee = document.createElement("img");
-            imgAjoutee.id = "imgAjoutee";
-            imgAjoutee.src = URL.createObjectURL(file);
-            divImgAjoutee.appendChild(imgAjoutee);
-            imgAjouterFichier.remove();
-            labelAjouterFichier.remove();
-            inputAjouterFichier.remove();
-            pAjouterFichier.remove();
-            // Verification du type
-            const regexFormatFichier = /\.(jpg|jpeg|png)$/i;
-            const nomFichier = inputAjouterFichier.value;
-            if (!regexFormatFichier.test(nomFichier)) {
-            alertInfoFormatFichier();
-            overlay.remove();
-            console.log("mauvais format");
-            }
-            // Verification de la taille max
-            const fichier = inputAjouterFichier.files[0];
-            if (fichier && fichier.size > maxTailleFichier) {
-                alertInfoTailleFichier();
-                overlay.remove();
-                console.log("Document trop volumineux");
-            }
-        });
-    };
-    document.addEventListener("DOMContentLoaded", intialisationAjoutImg);
-    inputAjouterFichier.addEventListener("change", function () {
-        const file = inputAjouterFichier.files[0];
+    function addImage(file) {
         const divImgAjoutee = document.querySelector(".divAjoutFichier");
+        const imgLabel  =document.querySelector(".divAjoutFichier img")
+        imgLabel.remove()
         const imgAjoutee = document.createElement("img");
         imgAjoutee.id = "imgAjoutee";
         imgAjoutee.src = URL.createObjectURL(file);
         divImgAjoutee.appendChild(imgAjoutee);
-        imgAjouterFichier.remove();
-        labelAjouterFichier.remove();
+    }
+    function handleFileSelection() {
+        const file = inputAjouterFichier.files[0];
+        addImage(file);
         inputAjouterFichier.remove();
+        labelAjouterFichier.remove();
         pAjouterFichier.remove();
-        // Verification du type
+    
         const regexFormatFichier = /\.(jpg|jpeg|png)$/i;
         const nomFichier = inputAjouterFichier.value;
         if (!regexFormatFichier.test(nomFichier)) {
-        alertInfoFormatFichier();
-        overlay.remove();
-        console.log("mauvais format");
+            alertInfoFormatFile();
+            overlay.remove();
+            console.log("mauvais format");
         }
-        // Verification de la taille max
         const fichier = inputAjouterFichier.files[0];
         if (fichier && fichier.size > maxTailleFichier) {
-            alertInfoTailleFichier();
+            alertInfoFileSize();
             overlay.remove();
             console.log("Document trop volumineux");
         }
+    }
+    inputAjouterFichier.addEventListener("change", handleFileSelection);
+    document.addEventListener("DOMContentLoaded", function () {
+        inputAjouterFichier.addEventListener("change", handleFileSelection);
     });
     // Alerte en cas de mauvais format
-    function alertInfoFormatFichier() {
+    function alertInfoFormatFile() {
         const bodyAlert = document.querySelector("body");        
         const overlay = document.createElement("div");
         overlay.className ="overlay";        
@@ -483,11 +460,11 @@ function modaleAjouterWorks() {
         btnAlertFormat.addEventListener("click", function (event) {
             overlay.remove();
             alertContainer.remove();
-             modaleAjouterWorks(event);
+             modalAddWorks(event);
         });
     };
     // Alerte en cas de mauvaise taille max
-    function alertInfoTailleFichier() {
+    function alertInfoFileSize() {
         const bodyAlert = document.querySelector("body");    
         const overlay = document.createElement("div");
         overlay.className ="overlay";    
@@ -505,11 +482,11 @@ function modaleAjouterWorks() {
         btnAlertFormat.addEventListener("click", function () {
             overlay.remove();
             alertContainer.remove();
-            modaleAjouterWorks();
+            modalAddWorks();
         });
     };
     // Alerte champs vide
-    function alertInfoChampVideFichier() {
+    function alertInfoFieldEmptyFile() {
         const bodyAlert = document.querySelector("body");
     
         const overlay = document.createElement("div");
@@ -534,7 +511,7 @@ function modaleAjouterWorks() {
         bodyAlert.appendChild(overlay);
     }
     // Alerte Validation Fichier
-    function alertInfoValidationFichier() {
+    function alertInfoFileValidation() {
         const bodyAlert = document.querySelector("body");
     
         const overlay = document.createElement("div");
@@ -551,7 +528,7 @@ function modaleAjouterWorks() {
 
         btnAJouterUnAutre.addEventListener("click", function () {
             overlay.remove()
-            modaleAjouterWorks()
+            modalAddWorks()
         })
     
         alertContainer.appendChild(alertP);
@@ -560,7 +537,7 @@ function modaleAjouterWorks() {
         bodyAlert.appendChild(overlay);
     };
     //Alerte Error 404
-    function alertInfoErrorFichier() {
+    function alertErrorInfoFile() {
         const bodyAlert = document.querySelector("body");
     
         const overlay = document.createElement("div");
@@ -596,7 +573,7 @@ function modaleAjouterWorks() {
         formData.append("category", categorieFichier);
         // Gestion des champs vides avec désactivation du bouton
         if (imgFichier === undefined || titreFichier === "" || categorieFichier === "") {
-            alertInfoChampVideFichier();
+            alertInfoFieldEmptyFile();
             console.log("Champs vides");
             return;
         }
@@ -606,23 +583,23 @@ function modaleAjouterWorks() {
             body: formData,
         });
         if (swaggerWorksAjout.ok) {
-            alertInfoValidationFichier()
+            alertInfoFileValidation()
             console.log("Fichier ajouté avec succès");
             // Reponse de l'API
             const works = await swaggerWorksAjout.json();
-            ajoutNouveauFichierGalerie(works);
-            ajoutNouveauFichierGalerieModale(works);
+            addNewFileGalerie(works);
+            addNewFileModalGalleryAccueil(works);
             containerAjouterWorks.remove();
             overlay.remove();
             
         } else {
-            alertInfoErrorFichier();
+            alertErrorInfoFile();
             console.log("Échec de l'ajout du fichier");
         };
     });
     
     // Ajout de l'élément dans la galerie
-    function ajoutNouveauFichierGalerie(works) {
+    function addNewFileGalerie(works) {
         const worksElement = document.createElement("figure");
         worksElement.className = works.id;
         const imageElement = document.createElement("img");
@@ -637,7 +614,7 @@ function modaleAjouterWorks() {
         console.log("Ajout fichier a la galerie")
     };
     // Ajout de l'élément dans la galerie de la modale avec btn trash actif
-    function ajoutNouveauFichierGalerieModale(works) {
+    function addNewFileModalGalleryAccueil(works) {
         const modaleGalerie = document.querySelector(".overlay");
         const worksElementModale = document.createElement("figure");
         worksElementModale.id = works.id;
@@ -658,7 +635,7 @@ function modaleAjouterWorks() {
         worksElementModale.appendChild(imageElementModale);
         modaleGalerie.appendChild(worksElementModale);
         console.log("Ajout fichier à la modale")
-        function supprimerNewElement(figureGalerie) {
+        function deleteNewElement(figureGalerie) {
             const elementASupprimer = document.getElementById(figureGalerie);
             if (elementASupprimer) {
                 elementASupprimer.remove();
@@ -681,7 +658,7 @@ function modaleAjouterWorks() {
             if (deleteWorks.ok) {
                 console.log("Delete ok !");
                 console.log(Id);
-                supprimerNewElement(Id);
+                deleteNewElement(Id);
             }
         });
     };
@@ -689,15 +666,15 @@ function modaleAjouterWorks() {
 
 // Gestion du mode editon apres connexion
 if (token) {
-    headerModeEdition();
-    portfolioModeEdition();
+    headerEditMode();
+    portfolioEditMode();
     // Ouverture Modale
     const btnOpenModale = document.querySelector("#portfolio h2");
     btnOpenModale.addEventListener("click", function (){
-        modaleGestionGalerie(works);
+        modalGallery(works);
     });
 }else{
     // Pas de mode edition si token pas présent
-        genererButtonFiltre(categories); 
-        genererWorks(works);
+        generateButtonFilters(categories); 
+        generateWorks(works);
 }
